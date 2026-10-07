@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/bumbleflies/live/compare/live-v0.2.0...live-v0.2.1) (2026-10-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency typescript to v7 ([f659be1](https://github.com/bumbleflies/live/commit/f659be167c4a1331aeb313ffaf7168d53a2762d1))
+* **deps:** update dependency typescript to v7 ([0e56687](https://github.com/bumbleflies/live/commit/0e56687c2c8e196bf3d21531fcde760ce523da0e))
+
 ## [0.2.0](https://github.com/bumbleflies/live/compare/live-v0.1.0...live-v0.2.0) (2026-10-07)
 
 
