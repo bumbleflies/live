@@ -1,0 +1,25 @@
+name: Release Build & Publish
+
+on:
+  push:
+    tags:
+      - "live-v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: true
+
+jobs:
+  pr-tests:
+    uses: ./.github/workflows/pr-tests.yml
+
+  build-publish:
+    needs: pr-tests
+    uses: ./.github/workflows/build-publish.yml
+    with:
+      version: ${{ github.ref_name }}
+      publish: true
+    secrets: inherit

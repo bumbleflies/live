@@ -1,5 +1,11 @@
 node_modules/
 dist/
-.worktrees/
 .env
+*.local
+.DS_Store
+client_secret_*.json
+.idea/
+playwright-report/
+test-results/
+.worktrees/
 *.tsbuildinfo

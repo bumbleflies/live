@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Plan
+    url: https://github.com/bumbleflies/live/blob/master/PLAN.md
+    about: Design and implementation plan for the live.bumbleflies.de sidecar app — read before you start.
