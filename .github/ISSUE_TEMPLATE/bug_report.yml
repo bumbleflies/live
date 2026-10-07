@@ -1,0 +1,89 @@
+name: 🐛 Bug report
+description: Something in live isn't working as expected
+title: "[Area] Short description"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. The more concrete the repro, the faster it gets fixed:
+        which of the 9 links was wrong, the room it happened in, plus exact steps beats a
+        general description. **This repo is public.** Do not paste room passwords or
+        anything sensitive beyond what's needed to reproduce.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of live does this affect?
+      options:
+        - Room generation / links
+        - OBS scene-collection download
+        - Auth / login
+        - UI (layout, dark mode, mobile)
+        - infrastructure / deployment (Docker, CI, servyy-container)
+        - other / not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where did you see this?
+      options:
+        - Production (live.bumbleflies.de)
+        - servyy-test
+        - Local / dev
+        - Not applicable
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What's broken? Include the page URL and what you were doing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps from a clean state.
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs. actual behavior
+      placeholder: |
+        Expected: ...
+        Actual: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence (logs, screenshots)
+      description: Relevant container log output or screenshots. Redact room passwords.
+      render: text
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and this isn't a duplicate
+          required: true
+        - label: This is reproducible (not a one-off environmental blip)
+          required: false
