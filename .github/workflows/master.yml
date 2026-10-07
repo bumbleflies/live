@@ -1,0 +1,44 @@
+name: Master Workflow
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "tsconfig.server.json"
+      - "vite.config.ts"
+      - "vitest.config.ts"
+      - "Dockerfile"
+      - "entrypoint.sh"
+      - ".github/workflows/master.yml"
+  workflow_dispatch:
+
+jobs:
+  pr-tests:
+    uses: ./.github/workflows/pr-tests.yml
+
+  docker-build-test:
+    needs: pr-tests
+    uses: ./.github/workflows/docker-build-test.yml
+
+  push:
+    needs: docker-build-test
+    uses: ./.github/workflows/build-publish.yml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: push
+
+    steps:
+      - name: Deploy note
+        run: |
+          echo "Image bumblecode/live:latest pushed. Watchtower pulls it on the"
+          echo "servyy-container host; the bumbleflies compose project then runs"
+          echo "it behind Traefik at live.bumbleflies.de."
