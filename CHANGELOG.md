@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/bumbleflies/live/compare/live-v0.6.0...live-v0.6.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency concurrently to v10.0.6 ([#15](https://github.com/bumbleflies/live/issues/15)) ([381415a](https://github.com/bumbleflies/live/commit/381415a6ac0905d2815da6e3f108c8edd27cbce3))
+
 ## [0.6.0](https://github.com/bumbleflies/live/compare/live-v0.5.0...live-v0.6.0) (2026-10-08)
 
 
