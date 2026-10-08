@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/bumbleflies/live/compare/live-v0.3.1...live-v0.4.0) (2026-10-08)
+
+
+### Features
+
+* bumble-live kit moves in; external guest slot, scene monitor, brand fix ([#11](https://github.com/bumbleflies/live/issues/11)) ([e1a6bcd](https://github.com/bumbleflies/live/commit/e1a6bcd4679e798df7f88b3c6f83eb144fdebc7e))
+
 ## [0.3.1](https://github.com/bumbleflies/live/compare/live-v0.3.0...live-v0.3.1) (2026-10-08)
 
 
