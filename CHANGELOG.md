@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/bumbleflies/live/compare/live-v0.4.0...live-v0.5.0) (2026-10-08)
+
+
+### Features
+
+* three access tiers — public landing, anonymous guests, members ([#13](https://github.com/bumbleflies/live/issues/13)) ([28f353e](https://github.com/bumbleflies/live/commit/28f353ea3c312c932e40994ee619cba16e031792))
+
 ## [0.4.0](https://github.com/bumbleflies/live/compare/live-v0.3.1...live-v0.4.0) (2026-10-08)
 
 
