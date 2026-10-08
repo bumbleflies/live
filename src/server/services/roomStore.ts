@@ -29,10 +29,19 @@ function valid(room: unknown): room is StoredRoom {
 
 /** Atomic replace: same-directory temp file + rename. */
 function persist(room: StoredRoom): void {
-  fs.mkdirSync(resolveDataDir(), { recursive: true });
-  const tmp = `${stateFile()}.tmp`;
-  fs.writeFileSync(tmp, `${JSON.stringify({ ...room }, null, 2)}\n`);
-  fs.renameSync(tmp, stateFile());
+  try {
+    fs.mkdirSync(resolveDataDir(), { recursive: true });
+    const tmp = `${stateFile()}.tmp`;
+    fs.writeFileSync(tmp, `${JSON.stringify({ ...room }, null, 2)}\n`);
+    fs.renameSync(tmp, stateFile());
+  } catch (err) {
+    console.error(
+      `roomStore: cannot write ${stateFile()} (DATA_DIR=${resolveDataDir()}). ` +
+        'The dir must exist and be writable by the container user.',
+      err,
+    );
+    throw err;
+  }
 }
 
 /**

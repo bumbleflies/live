@@ -14,6 +14,10 @@ RUN npm run build
 FROM node:24-alpine
 # Business dates are local German dates
 ENV TZ=Europe/Berlin
+# Data dir owned by the runtime user and advertised via env — the compose
+# volume (live-data:/data) inherits this ownership on first mount.
+ENV DATA_DIR=/data
+RUN mkdir -p /data && chown node:node /data
 WORKDIR /app
 COPY --from=builder --chown=node:node /app/dist ./dist
 COPY --from=builder --chown=node:node /app/node_modules ./node_modules
