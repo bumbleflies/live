@@ -92,6 +92,54 @@ a {
   text-align: center;
 }
 
+.guest-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border: 1px solid var(--accent-dark);
+  color: var(--accent-dark);
+  font-size: var(--text-sm);
+  padding: var(--space-xs) var(--space-md);
+}
+
+.access-entry {
+  margin: var(--space-xl) auto 0;
+  max-width: 34rem;
+  text-align: left;
+}
+
+.access-entry label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin-bottom: var(--space-xs);
+}
+
+.access-entry textarea {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  padding: var(--space-sm);
+  resize: vertical;
+}
+
+.access-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
 .signin h1 {
   font-family: var(--font-display);
   font-weight: 400;
