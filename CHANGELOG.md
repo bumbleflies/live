@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/bumbleflies/live/compare/live-v0.5.0...live-v0.6.0) (2026-10-08)
+
+
+### Features
+
+* **ui:** asterisk warnings become hover/focus tooltips ([#17](https://github.com/bumbleflies/live/issues/17)) ([ee8bdba](https://github.com/bumbleflies/live/commit/ee8bdba8c9c29d6dae5c700c940efb6f041dfeda))
+
 ## [0.5.0](https://github.com/bumbleflies/live/compare/live-v0.4.0...live-v0.5.0) (2026-10-08)
 
 
