@@ -55,7 +55,7 @@ npm start            # node dist/src/server/index.js (needs NODE_ENV=production 
 | `JWT_SECRET` | required, fail-fast at boot; fresh secret for this app (e.g. `openssl rand -hex 32`), **not** reused from queen |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | existing bumbleflies-only OAuth client, same values queen uses |
 | `GOOGLE_CALLBACK_URL` | `https://live.bumbleflies.de/auth/google/callback` |
-| `DATA_DIR` | room persistence dir (`/data` in prod, backed by the `live-data` volume) |
+| `DATA_DIR` | room persistence dir; the image defaults to `/data` (owned by the container user, so the `live-data` volume mounts pre-owned) — unset means `./data` locally |
 | `NODE_ENV` / `PORT` | `production` / `3000` in the compose env template |
 
 Server-side access is additionally defended in code with an

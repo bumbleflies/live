@@ -104,6 +104,25 @@ jobs:
             docker logs test_container
             exit 1
           fi
+
+      - name: Test authed room endpoint (exercises DATA_DIR write)
+        run: |
+          # The container above boots with JWT_SECRET=ci-healthcheck-not-a-real-secret;
+          # sign a throwaway token with the same value (jsonwebtoken ships in the
+          # app image) so POST /api/room can run inside the container. That endpoint
+          # persists DATA_DIR — the exact write that failed as a silent EACCES 500
+          # in production when /data was not writable by the container user.
+          TOKEN=$(docker exec test_container node -e \
+            "console.log(require('jsonwebtoken').sign({email:'ci@bumbleflies.de'},'ci-healthcheck-not-a-real-secret',{expiresIn:'1h'}))")
+          status_code=$(docker exec test_container wget --header="Authorization: Bearer $TOKEN" \
+            --server-response --post-data='' -q -O /dev/null http://localhost:3000/api/room 2>&1 \
+            | grep -o "HTTP/1.[01] [0-9][0-9][0-9]" | awk '{print $2}' | tail -1)
+          echo "POST /api/room -> $status_code"
+          if [ "$status_code" != "200" ]; then
+            echo "expected 200 — DATA_DIR is likely not writable by the container user"
+            docker logs test_container || true
+            exit 1
+          fi
           docker stop test_container
 
   push:
