@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/bumbleflies/live/compare/live-v0.3.0...live-v0.3.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* writable DATA_DIR=/data in the image; CI gate for the room endpoint ([#9](https://github.com/bumbleflies/live/issues/9)) ([3a37765](https://github.com/bumbleflies/live/commit/3a37765f70f1e00c5e4632ecd8f46ecf297591cf))
+
 ## [0.3.0](https://github.com/bumbleflies/live/compare/live-v0.2.1...live-v0.3.0) (2026-10-08)
 
 
