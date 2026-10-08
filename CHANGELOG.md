@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/bumbleflies/live/compare/live-v0.2.1...live-v0.3.0) (2026-10-08)
+
+
+### Features
+
+* persistent room with explicit rotate, embedded stream windows ([#7](https://github.com/bumbleflies/live/issues/7)) ([2edd07d](https://github.com/bumbleflies/live/commit/2edd07da8b0d57c7e598ce2e44416ad99071cd1a))
+
 ## [0.2.1](https://github.com/bumbleflies/live/compare/live-v0.2.0...live-v0.2.1) (2026-10-07)
 
 
