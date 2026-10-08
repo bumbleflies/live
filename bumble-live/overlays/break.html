@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  html { background: #1a1714; }
+  .bg { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; background: #1a1714; }
+  body { background: #1a1714; color: #f3f1ec; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; display: flex; align-items: center; justify-content: center; }
+  .frame { position: absolute; inset: 48px; border: 2px solid rgba(243,241,236,.2); pointer-events: none; }
+  .card { position: relative; z-index: 1; text-align: center; }
+  .kicker { display: inline-block; font-size: 32px; letter-spacing: .28em; text-transform: uppercase; color: #1a1714; background: #f5f1e8; padding: 12px 28px 12px 34px; border-radius: 999px; margin-bottom: 40px; }
+  h1 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: 170px; line-height: 1; }
+  h1 em { font-style: italic; color: #a67c4d; }
+  .sub { margin-top: 24px; font-size: 46px; color: rgba(243,241,236,.72); }
+  .bar { margin: 48px auto 0; width: 560px; height: 10px; border-radius: 999px; background: rgba(243,241,236,.18); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 40%; border-radius: 999px; background: #a67c4d; animation: slide 2.2s ease-in-out infinite alternate; }
+  @keyframes slide { from { margin-left: 0; } to { margin-left: 60%; } }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="frame"></div>
+  <div class="card">
+    <div class="kicker">bumble:live</div>
+    <h1>kurze <em>Pause</em></h1>
+    <div class="sub">Wir sind gleich wieder da.</div>
+    <div class="bar"><i></i></div>
+  </div>
+</body>
+</html>

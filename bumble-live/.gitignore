@@ -1,0 +1,4 @@
+# Never commit a real stream key or room password.
+streamkey.txt
+room-password.txt
+local-notes.md

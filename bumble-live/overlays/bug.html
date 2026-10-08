@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body { background: transparent; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bug {
+    position: absolute; top: 48px; right: 48px;
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(26,23,20,.88); color: #faf7f0;
+    padding: 14px 24px; border-radius: 999px;
+    border: 2px solid rgba(250,247,240,.25);
+  }
+  .dot { width: 18px; height: 18px; border-radius: 999px; background: #c0392b; animation: blink 1.6s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  .bug b { font-size: 30px; letter-spacing: .1em; }
+  .bug span { font-size: 26px; color: rgba(250,247,240,.75); }
+</style>
+</head>
+<body>
+  <div class="bug"><div class="dot"></div><b>bumble:live</b><span>Nico &middot; Sebi &middot; Chris</span></div>
+</body>
+</html>

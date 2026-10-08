@@ -14,6 +14,7 @@ export interface Room {
   password: string;
   director: string;
   guests: GuestLink[];
+  externalGuest: GuestLink;
   obsSources: ObsSource[];
   screenShare: { guestLink: string; obsLink: string; warning?: string };
 }
@@ -58,6 +59,8 @@ export function obsViewLink(room: string, password: string, push: string): strin
 }
 
 export function buildLinks(room: string, password: string): Room {
+  const sharedWarning =
+    "Do NOT use the director page's own INVITE A GUEST link — it assigns a random push id, not the fixed one OBS watches. Send this link to the guest manually. The &backgroundblur parameter does not work reliably, so the guest enables background blur manually after joining, via VDO.Ninja's own camera/video icon toolbar.";
   return {
     room,
     password,
@@ -65,18 +68,25 @@ export function buildLinks(room: string, password: string): Room {
     guests: GUEST_NAMES.map((name) => ({
       name,
       link: guestLink(room, password, name),
-      warning:
-        "Do NOT use the director page's own INVITE A GUEST link — it assigns a random push id, not the fixed one OBS watches. Send this link to the guest manually. The &backgroundblur parameter does not work reliably, so the guest enables background blur manually after joining, via VDO.Ninja's own camera/video icon toolbar.",
+      warning: sharedWarning,
     })),
-    obsSources: GUEST_NAMES.map((name) => ({
+    externalGuest: {
+      name: 'Guest',
+      link: guestLink(room, password, 'Guest'),
+      warning: `${sharedWarning} This is the external interview guest slot — leave it unused if no extra person joins.`,
+    },
+    obsSources: [...GUEST_NAMES.map((name) => ({
       name,
       link: obsViewLink(room, password, `${name}Cam`),
-    })),
+    })), {
+      name: 'Guest',
+      link: obsViewLink(room, password, 'GuestCam'),
+    }],
     screenShare: {
       guestLink: `${VDO}/?room=${enc(room)}&password=${enc(password)}&push=ScreenShare&label=Screen`,
       obsLink: obsViewLink(room, password, 'ScreenShare'),
       warning:
-        'Screen share: opens a SECOND browser tab, the camera tab stays open. Keep this backup slot unused until a screen share is needed.',
+        'Screen share: opens a SECOND browser tab, the camera tab stays open. Keep this slot unused until a screen share is needed.',
     },
   };
 }

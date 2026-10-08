@@ -12,6 +12,6 @@
     "rootDir": ".",
     "types": ["vitest/globals"]
   },
-  "include": ["src/server/**/*"],
+  "include": ["src/server/**/*", "bumble-live/OBS/scene-collections/*.json"],
   "exclude": ["src/server/**/__tests__/**", "src/**/*.test.ts"]
 }

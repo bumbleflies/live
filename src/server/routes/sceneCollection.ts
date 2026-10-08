@@ -1,4 +1,4 @@
-import sceneTemplate from '../assets/scene-collections/Bumbleflies-Live.json';
+import sceneTemplate from '../../../bumble-live/OBS/scene-collections/Bumbleflies-Live.json';
 import { obsViewLink, type Room } from '../services/roomLinks.js';
 
 export interface SceneSource {
@@ -6,7 +6,7 @@ export interface SceneSource {
   settings?: { url?: string };
 }
 
-// The four Browser Sources whose URLs get repointed to the generated room.
+// Mapping of Browser Source names to the fixed push ids each watches.
 // Everything else (Overlay Starting/Break/Ending, Lower Thirds, Bug and the
 // scenes themselves) is left untouched.
 function vdoPushFor(name: string): string | undefined {
@@ -14,6 +14,7 @@ function vdoPushFor(name: string): string | undefined {
     Nico: 'NicoCam',
     Sebi: 'SebiCam',
     Chris: 'ChrisCam',
+    Guest: 'GuestCam',
     Screen: 'ScreenShare',
   } as Record<string, string | undefined>)[name];
 }

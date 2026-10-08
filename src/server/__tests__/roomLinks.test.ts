@@ -20,15 +20,25 @@ describe('buildLinks', () => {
   const encodedRoom = encodeURIComponent('room r~special');
   const encodedPass = encodeURIComponent('pass&word');
 
-  it('returns exactly the 9 links of generate-links.sh', () => {
+  it('returns exactly the 11 links incl. the external guest slot', () => {
     const links = [
       room.director,
       ...room.guests.map((g) => g.link),
+      room.externalGuest.link,
       ...room.obsSources.map((o) => o.link),
       room.screenShare.guestLink,
       room.screenShare.obsLink,
     ];
-    expect(links).toHaveLength(9);
+    expect(links).toHaveLength(11);
+  });
+
+  it('external guest watches the fixed GuestCam push id', () => {
+    expect(room.externalGuest.link).toBe(
+      `https://vdo.ninja/?room=${encodedRoom}&password=${encodedPass}&push=GuestCam&label=Guest`,
+    );
+    expect(room.obsSources.find((o) => o.name === 'Guest')?.link).toBe(
+      `https://vdo.ninja/?view=GuestCam&solo&room=${encodedRoom}&password=${encodedPass}`,
+    );
   });
 
   it('encodes every parameter — room names are never assumed safe', () => {
@@ -59,6 +69,7 @@ describe('buildLinks', () => {
     const all = [
       room.director,
       ...room.guests.map((g) => g.link),
+      room.externalGuest.link,
       ...room.obsSources.map((o) => o.link),
       room.screenShare.guestLink,
       room.screenShare.obsLink,
@@ -69,11 +80,12 @@ describe('buildLinks', () => {
   });
 
   it('carries the hard-won warnings verbatim per topic', () => {
-    for (const guest of room.guests) {
+    for (const guest of [...room.guests, room.externalGuest]) {
       expect(guest.warning).toMatch(/Do NOT use the director page's own INVITE A GUEST link/);
       expect(guest.warning).toMatch(/random push id, not the fixed one OBS watches/);
       expect(guest.warning).toMatch(/background blur manually after joining/);
     }
+    expect(room.externalGuest.warning).toMatch(/external interview guest slot/);
     expect(room.screenShare.warning).toMatch(/opens a SECOND browser tab/);
     expect(room.screenShare.warning).toMatch(/camera tab stays open/);
   });

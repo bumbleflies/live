@@ -1,0 +1,9 @@
+{
+  "type": "rtmp_common",
+  "settings": {
+    "service": "YouTube",
+    "server": "rtmp://a.rtmp.youtube.com/live2",
+    "key": "PASTE_STREAM_KEY_HERE",
+    "use_auth": false
+  }
+}

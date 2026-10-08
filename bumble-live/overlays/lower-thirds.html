@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body { background: transparent; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .lower {
+    position: absolute; left: 80px; bottom: 80px;
+    display: flex; align-items: stretch; gap: 0;
+    filter: drop-shadow(0 12px 32px rgba(0,0,0,.35));
+  }
+  .name {
+    background: #1a1714; color: #faf7f0;
+    font-size: 44px; font-weight: 700; padding: 22px 36px;
+    border-radius: 18px 0 0 18px;
+  }
+  .role {
+    background: #faf7f0; color: #1a1714;
+    font-size: 34px; padding: 22px 32px;
+    border-radius: 0 18px 18px 0; border: 2px solid #1a1714; border-left: none;
+    display: flex; align-items: center;
+  }
+  .show { position: absolute; right: 80px; bottom: 80px; background: #4a3f8f; color: #faf7f0; font-size: 30px; font-weight: 700; letter-spacing: .14em; padding: 18px 28px; border-radius: 999px; }
+</style>
+</head>
+<body>
+  <div class="lower" id="lower">
+    <div class="name" id="lname">Nico</div>
+    <div class="role" id="lrole">Host, bumble:live</div>
+  </div>
+  <div class="show">bumble:live</div>
+<script>
+  var people = [
+    ["Nico", "Host, bumble:live"],
+    ["Sebi", "bumbleflies"],
+    ["Chris", "bumbleflies"]
+  ];
+  var i = 0;
+  setInterval(function () {
+    i = (i + 1) % people.length;
+    document.getElementById("lname").textContent = people[i][0];
+    document.getElementById("lrole").textContent = people[i][1];
+  }, 8000);
+</script>
+</body>
+</html>

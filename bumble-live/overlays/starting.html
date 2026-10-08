@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  html { background: #1a1714; }
+  .bg { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; background: #1a1714; }
+  body {
+    background: #1a1714;
+    color: #f3f1ec;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .frame { position: absolute; inset: 48px; border: 2px solid rgba(243,241,236,.2); pointer-events: none; }
+  .card { position: relative; z-index: 1; text-align: center; max-width: 1300px; }
+  .kicker {
+    display: inline-block; font-size: 34px; letter-spacing: .28em; text-transform: uppercase;
+    color: #1a1714; background: #f5f1e8; padding: 14px 30px 14px 38px; border-radius: 999px;
+    margin-bottom: 48px;
+  }
+  h1 {
+    font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+    font-size: 210px; line-height: .95; letter-spacing: -.02em;
+  }
+  h1 em { font-style: italic; color: #a67c4d; }
+  .sub { margin-top: 28px; font-size: 44px; color: rgba(243,241,236,.72); }
+  .names { margin-top: 56px; display: flex; gap: 24px; justify-content: center; }
+  .names span {
+    font-size: 38px; padding: 16px 34px; border-radius: 999px;
+    border: 2px solid rgba(243,241,236,.65); background: transparent; color: #f3f1ec;
+  }
+  .names span.live { background: #4a3f8f; border-color: #4a3f8f; color: #faf7f0; }
+  .foot { position: absolute; bottom: 90px; width: 100%; text-align: center; font-size: 30px; letter-spacing: .18em; text-transform: uppercase; color: rgba(243,241,236,.55); }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="frame"></div>
+  <div class="card">
+    <div class="kicker">Bumbleflies live session</div>
+    <h1>bumble<em>:live</em></h1>
+    <div class="sub">Starting shortly. Audio check, headphones on.</div>
+    <div class="names"><span class="live">Nico</span><span>Sebi</span><span>Chris</span></div>
+  </div>
+  <div class="foot">youtube &middot; vdo.ninja &middot; obs</div>
+</body>
+</html>

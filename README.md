@@ -3,9 +3,9 @@
 Login-gated sidecar app for generating `bumble:live` VDO.Ninja room links and the
 matching OBS scene-collection file. Design and implementation plan: [`PLAN.md`](./PLAN.md).
 
-Sign in with a bumbleflies.de Google account and get the 9 links (director, 3
-guests, 3 OBS view sources, screen-share guest + OBS) with the hard-won warnings
-inline, embedded stream windows to join the room right on the page, and a download
+Sign in with a bumbleflies.de Google account and get the 11 links (director, 3
+hosts + external guest, 4+1 OBS view sources, screen share + OBS) with the hard-won
+warnings inline, a scene-aware stream monitor and in-page join windows, and a download
 of the patched 8-scene OBS scene collection (`03 Nico` / `04 Sebi` / `05 Chris` solo
 scenes). Links are permanent, so OBS is imported once ever. Everything else — stream
 key, YouTube event, profiles — stays with the bumble:live runbook.
@@ -73,23 +73,25 @@ Server-side access is additionally defended in code with an
   `redirect_uri_mismatch`. Also required once in GitHub repo settings: Docker Hub
   secrets `DOCKERHUB_USERNAME` / `DOCKER_TOKEN` (used by `master.yml` push job).
 
-## Vendored files (re-copy by hand if the source changes)
+## Streaming kit & template source of truth
 
-- `src/server/assets/scene-collections/Bumbleflies-Live.json` — copy of
-  `bumble-live/OBS/scene-collections/` in the **bumbleflies/web** repo (the
-  restructured 8-scene template with the solo scenes). The app deliberately does not
-  depend on the web repo at build time; if the scene layout changes there again,
-  re-copy this file and adjust the `view=`/push-id mapping only if source names
-  change.
-- `src/client/styles.css` — the design tokens copied from `web/beta`'s design system.
+- `bumble-live/` — the full bumble:live host kit (runbook, checklist, OBS profiles and
+  scene collection, overlays, `tools/generate-links.sh`). It moved here from the
+  **bumbleflies/web** repo; this is now the single source of truth. The server imports
+  `bumble-live/OBS/scene-collections/Bumbleflies-Live.json` directly, so scene changes
+  must be made there, never in a copied file.
+- `src/client/styles.css` — the design tokens copied from web's design system.
 
-## Stream windows (embedded VDO.Ninja)
+## Stream monitor & join windows (embedded VDO.Ninja)
 
-The signed-in page embeds every person's **publish window** — the guest links
-themselves — so joining the room happens on the site. Publish pages inside iframes
-require `allow="camera; microphone; display-capture; autoplay; fullscreen"` and,
-depending on browser, a permissions "allow" on the embedded vdo.ninja page. The
-"open in new tab" fallback on each card is the escape hatch for Safari/iOS or
+The signed-in page mirrors the OBS scenarios: a **stream monitor** panel with the
+8 scene modes (`All hosts equally`, `Hosts + Guest`, `Hosts + Screen`, one Focus per
+person), composed in CSS from the documented solo `view=<id>&solo` links — the same
+feeds OBS consumes. **Join as …** opens a publish window (the person's guest link)
+right on the page; anyone signed in can go on camera without leaving the site.
+
+Permissions: iframes use `allow="camera; microphone; display-capture; autoplay;
+fullscreen"`. The "open in new tab" fallback is the escape hatch for Safari/iOS or
 browser-popout restrictions; the director stays a plain link.
 
 ## Verification before first real use
@@ -97,8 +99,8 @@ browser-popout restrictions; the director stays a plain link.
 1. Deploy to `servyy-test`, sign in with a real `@bumbleflies.de` account, confirm
    `/auth/me` shows the right email; confirm a non-bumbleflies Google account is
    rejected (this exercises the OAuth client restriction, the actual boundary).
-2. Generate a room and compare the 9 links against `tools/generate-links.sh` output
-   (shape + warnings).
+2. Generate a room and compare the links against `tools/generate-links.sh` output
+   (shape + warnings), including the external-guest slot.
 3. Download the scene collection, import into a **test** OBS scene collection, confirm
    the four VDO.Ninja sources point at the new room and OBS imports the file cleanly.
 4. Only then promote to production per the existing gated-rollout process.
