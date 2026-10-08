@@ -82,6 +82,25 @@ Server-side access is additionally defended in code with an
   must be made there, never in a copied file.
 - `src/client/styles.css` — the design tokens copied from web's design system.
 
+## Access tiers: public / guest / bumbleflies
+
+- **Public** (root, no link): a static landing — what the show is, Google sign-in for
+  bumbleflies members, and an "Open access link" field that accepts a full guest URL,
+  the `#…` code fragment, or a bare `r=…&p=…` code. Zero API calls, zero room secrets.
+- **Guest** (hash capability `#r=…&p=…&person=X`): anonymous personal page bound to one
+  person — their own camera/publish window, the full scene monitor (watch what OBS
+  sees), and the VDO.Ninja **director** for room control (mute/spot/solo). Guests
+  cannot manage: rotate, OBS scene collection download and the links list stay behind
+  the bumbleflies Google gate. Per-person binding is UI policy, not cryptography —
+  the fragment contains everything, so handle guest links like keys; **rotating the
+  room revokes every guest link**.
+- **Bumbleflies** (Google session): full room management incl. guest-link creation
+  ("Guest access links" section), rotate, scene collection.
+
+The secret in guest links lives in the URL fragment, which browsers never send to the
+server (no access logs, no API traffic). Guest flows make zero authenticated calls —
+the bumbleflies-only OAuth client remains the sole gate to any privileged endpoint.
+
 ## Stream monitor & join windows (embedded VDO.Ninja)
 
 The signed-in page mirrors the OBS scenarios: a **stream monitor** panel with the

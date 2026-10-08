@@ -1,27 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import {
+  buildFacadeRoom,
+  buildShareHash,
+  buildShareUrl,
+  parseAccessCode,
+  parseShareHash,
+  type Room,
+} from './lib/share';
 import './styles.css';
-
-interface GuestLink {
-  name: string;
-  link: string;
-  warning?: string;
-}
-
-interface ObsSource {
-  name: string;
-  link: string;
-}
-
-interface Room {
-  room: string;
-  password: string;
-  director: string;
-  guests: GuestLink[];
-  externalGuest: GuestLink;
-  obsSources: ObsSource[];
-  screenShare: { guestLink: string; obsLink: string; warning?: string };
-}
 
 interface User {
   email: string;
@@ -44,22 +31,28 @@ async function api<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 function LinkRow({ label, link }: { label: string; link: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = useCallback(async () => {
-    await navigator.clipboard.writeText(link);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }, [link]);
   return (
     <div className="link-row">
       <span className="link-label">{label}</span>
       <a className="link-value" href={link} target="_blank" rel="noreferrer">
         {link}
       </a>
-      <button className={`copy-btn${copied ? ' copied' : ''}`} onClick={copy}>
-        {copied ? 'copied' : 'copy'}
-      </button>
+      <CopyBtn text={link} />
     </div>
+  );
+}
+
+function CopyBtn({ text, label }: { text: string; label?: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = useCallback(async () => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }, [text]);
+  return (
+    <button className={`copy-btn${copied ? ' copied' : ''}`} onClick={copy}>
+      {copied ? 'copied' : label ?? 'copy'}
+    </button>
   );
 }
 
@@ -386,6 +379,45 @@ function Generator({ user }: { user: User }) {
               ))}
               <LinkRow label="OBS source Screen" link={room.screenShare.obsLink} />
             </section>
+            <section>
+              <h2>Guest access links</h2>
+              <p className="warning">
+                <span className="warn-star">* </span>
+                For people outside bumbleflies. Each link opens this site in guest mode,
+                bound to one person: they can join and control the room via the director —
+                but they cannot manage it, and the bumbleflies tools stay behind the
+                Google gate. Handle them like keys; rotating the room revokes all of them.
+              </p>
+              <div className="share-row">
+                {room.guests.map((g) => (
+                  <CopyBtn
+                    key={g.name}
+                    text={buildShareUrl(window.location.origin, {
+                      room: room.room,
+                      password: room.password,
+                      person: g.name,
+                    })}
+                    label={`Copy guest link · ${g.name}`}
+                  />
+                ))}
+                <CopyBtn
+                  text={buildShareUrl(window.location.origin, {
+                    room: room.room,
+                    password: room.password,
+                    person: 'Guest',
+                  })}
+                  label="Copy guest link · Guest"
+                />
+                <CopyBtn
+                  text={buildShareUrl(window.location.origin, {
+                    room: room.room,
+                    password: room.password,
+                    person: 'Screen',
+                  })}
+                  label="Copy guest link · Screen"
+                />
+              </div>
+            </section>
           </div>
         </>
       )}
@@ -418,24 +450,169 @@ function Generator({ user }: { user: User }) {
   );
 }
 
-function SignedOut() {
+function GuestView({ share }: { share: { room: string; password: string; person?: string } }) {
+  const room = buildFacadeRoom(share.room, share.password);
+  const [joinName, setJoinName] = useState<WindowName | null>(
+    (share.person as WindowName) ?? null,
+  );
+  const leave = useCallback((e?: React.MouseEvent) => {
+    e?.preventDefault();
+    history.replaceState(null, '', window.location.pathname);
+    window.location.reload();
+  }, []);
+
+  return (
+    <>
+      <header className="page-header">
+        <div className="brand">
+          bumble<span className="accent">:live</span>
+        </div>
+        <div className="guest-chip">
+          guest access{share.person ? ` · ${share.person}` : ''}
+          <a href="#" onClick={leave}>
+            leave
+          </a>
+        </div>
+      </header>
+      <div className="windows">
+        <section>
+          <h2>Your window{joinName ? ` · ${joinName === 'Screen' ? 'Share screen' : joinName}` : ''}</h2>
+          <p className="warning">
+            <span className="warn-star">* </span>
+            Allow camera and microphone when asked. Background blur does not work via the
+            link — enable it after joining, via the camera/video icon toolbar. Headphones
+            strongly recommended (echoes otherwise).
+          </p>
+          {joinName ? (
+            <div className="scene-panel">
+              <iframe
+                key={joinName}
+                src={joinName === 'Screen' ? room.screenShare.guestLink : room.guests.find((g) => g.name === joinName)?.link ?? room.externalGuest.link}
+                title={`Publish window ${joinName}`}
+                allow={IFRAME_ALLOW}
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          ) : (
+            <div className="join-row">
+              <p className="hint">Pick who you are to open your camera window:</p>
+              {room.guests.map((g) => (
+                <button key={g.name} className="btn" onClick={() => setJoinName(g.name as WindowName)}>
+                  Join as {g.name}
+                </button>
+              ))}
+              <button className="btn" onClick={() => setJoinName('Guest')}>
+                Join as Guest
+              </button>
+              <button className="btn" onClick={() => setJoinName('Screen')}>
+                Share screen
+              </button>
+            </div>
+          )}
+          {joinName && (
+            <div className="window-foot">
+              <a
+                href={
+                  joinName === 'Screen'
+                    ? room.screenShare.guestLink
+                    : room.guests.find((g) => g.name === joinName)?.link ?? room.externalGuest.link
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                open in new tab
+              </a>
+              <button className="copy-btn" onClick={() => setJoinName(null)}>
+                switch person
+              </button>
+            </div>
+          )}
+        </section>
+        <section>
+          <h2>Watch the show</h2>
+          <SceneSwitcher room={room} />
+        </section>
+        <section>
+          <h2>Control the show</h2>
+          <p className="warning">
+            <span className="warn-star">* </span>
+            The director lets you mute, spotlight and solo people — the production side of
+            the room. You do not get room or OBS management: those stay with the bumbleflies
+            team.
+          </p>
+          <a className="btn btn-primary" href={room.director} target="_blank" rel="noreferrer">
+            Open director (room control)
+          </a>
+        </section>
+      </div>
+      <p className="hint">
+        Guest access: your link is personal — do not forward it. The bumbleflies team can
+        revoke access by rotating the room.
+      </p>
+    </>
+  );
+}
+
+function PublicLanding() {
+  const [code, setCode] = useState('');
+  const [failed, setFailed] = useState(false);
+  const open = useCallback(() => {
+    const share = parseAccessCode(code);
+    if (!share) {
+      setFailed(true);
+      return;
+    }
+    history.replaceState(null, '', buildShareHash(share));
+    window.location.reload();
+  }, [code]);
   return (
     <div className="signin">
       <h1>
-        bumble<span className="accent">:live</span> room setup
+        bumble<span className="accent">:live</span>
       </h1>
-      <p>Your permanent VDO.Ninja room, stream windows, and OBS scene collection.</p>
+      <p>
+        Bumbleflies' live show. On air via VDO.Ninja + OBS. Members manage the room here;
+        show guests get personal access links.
+      </p>
       <a className="btn btn-primary" href="/auth/google">
         Sign in with Google
       </a>
       <p className="hint">bumbleflies.de accounts only.</p>
+      <div className="access-entry">
+        <label htmlFor="access-code">Got a personal access link? Paste it here:</label>
+        <textarea
+          id="access-code"
+          rows={2}
+          value={code}
+          onChange={(e) => {
+            setCode(e.target.value);
+            setFailed(false);
+          }}
+          placeholder="https://live.bumbleflies.de/#r=…&p=…&person=…"
+        />
+        <div className="access-actions">
+          <button className="btn" onClick={open} disabled={!code.trim()}>
+            Open access link
+          </button>
+          {failed && <span className="error">That does not look like an access link.</span>}
+        </div>
+      </div>
     </div>
   );
 }
 
 function App() {
+  // Hash = guest capability. It wins over the member session: someone opening
+  // their own share link expects the guest view. Leaving is one click.
+  const [share, setShare] = useState(() => parseShareHash(window.location.hash));
   const [user, setUser] = useState<User | null>(null);
   const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const onHash = () => setShare(parseShareHash(window.location.hash));
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
   useEffect(() => {
     fetch('/auth/me')
@@ -447,11 +624,14 @@ function App() {
       .catch(() => setLoaded(true));
   }, []);
 
+  if (share) {
+    return <GuestView share={share} />;
+  }
   if (!loaded) {
     return null;
   }
   if (!user) {
-    return <SignedOut />;
+    return <PublicLanding />;
   }
   return <Generator user={user} />;
 }
