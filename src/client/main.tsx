@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   buildFacadeRoom,
@@ -60,9 +60,14 @@ function CopyBtn({ text, label }: { text: string; label?: string }) {
  * Inline warning marker: a star that reveals its text as a tooltip on hover or
  * keyboard focus — replaces full-text warning paragraphs repeated per section.
  */
-function TooltipStar({ children }: { children: string }) {
+function TooltipStar({ children }: { children: ReactNode }) {
   return (
-    <span className="tooltip" tabIndex={0} role="note" aria-label={children}>
+    <span
+      className="tooltip"
+      tabIndex={0}
+      role="note"
+      aria-label={typeof children === 'string' ? children : undefined}
+    >
       <span className="warn-star" aria-hidden="true">
         *
       </span>
