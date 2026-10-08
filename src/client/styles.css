@@ -139,6 +139,124 @@ a {
   border-color: var(--ink);
 }
 
+.btn-danger {
+  background: var(--paper);
+  border-color: #8f2f2f;
+  color: #8f2f2f;
+}
+
+.btn-danger:hover {
+  background: #8f2f2f;
+  border-color: #8f2f2f;
+  color: #fff;
+}
+
+.rotate-note {
+  background: var(--paper);
+  border: 1px solid #8f2f2f;
+  color: #8f2f2f;
+  padding: var(--space-md);
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-base);
+}
+
+.rotate-note .copy-btn {
+  margin-left: var(--space-sm);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 23, 20, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  max-width: 28rem;
+  width: calc(100% - var(--space-xl));
+  padding: var(--space-lg);
+  box-shadow: 0 8px 32px rgba(26, 23, 20, 0.25);
+}
+
+.modal h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  margin: 0 0 var(--space-sm);
+}
+
+.modal p {
+  color: var(--ink-soft);
+  margin: 0 0 var(--space-lg);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+}
+
+.windows {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0 var(--space-md);
+}
+
+.windows h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  margin: 0 0 var(--space-md);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--rule);
+}
+
+.windows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-md);
+}
+
+.window-card {
+  border: 1px solid var(--rule);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.window-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--rule);
+}
+
+.window-label {
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+
+.window-iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #111;
+}
+
+.window-foot {
+  padding: var(--space-xs) var(--space-md);
+  border-top: 1px solid var(--rule);
+  font-size: var(--text-xs);
+}
+
 .actions {
   display: flex;
   gap: var(--space-md);
