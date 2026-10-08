@@ -1,23 +1,14 @@
 import express, { type NextFunction, type Request, type Response } from 'express';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import { buildLinks, generatePassword, generateRoomName, type Room } from './services/roomLinks.js';
+import { buildLinks } from './services/roomLinks.js';
+import { getRoom, rotateRoom } from './services/roomStore.js';
 import { createAuthRouter, initPassport, requireAuth } from './routes/auth.js';
 import { getJwtSecret } from './services/AuthService.js';
 import { healthHandler } from './health.js';
 import { buildSceneCollectionJson, sceneCollectionFilename } from './routes/sceneCollection.js';
 
 initPassport();
-
-// Room state is intentionally session-scoped: the server keeps the last
-// generated room per authenticated email in memory so the OBS
-// scene-collection download can reuse the same room/password. No database —
-// nothing else needs to survive a restart.
-const lastRooms = new Map<string, Room>();
-
-export function clearRooms(): void {
-  lastRooms.clear();
-}
 
 export function createApp() {
   // Fail fast when JWT_SECRET is missing — otherwise every authed route
@@ -33,22 +24,23 @@ export function createApp() {
 
   app.use('/auth', createAuthRouter());
 
+  // Idempotent: returns the currently stored room's links. Never rotates —
+  // an explicitly confirmed POST /api/room/rotate is the only mutation.
   app.post('/api/room', requireAuth, (_req: Request, res: Response) => {
-    const room = buildLinks(generateRoomName(), generatePassword());
-    lastRooms.set((res.locals.user as AuthPayload).email, room);
-    res.json(room);
+    const { room, password } = getRoom();
+    res.json(buildLinks(room, password));
+  });
+
+  app.post('/api/room/rotate', requireAuth, (_req: Request, res: Response) => {
+    const { room, password } = rotateRoom();
+    res.json({ ...buildLinks(room, password), rotated: true });
   });
 
   app.post('/api/scene-collection', requireAuth, (_req: Request, res: Response) => {
-    const email = (res.locals.user as AuthPayload).email;
-    const room = lastRooms.get(email);
-    if (!room) {
-      res.status(409).json({ error: 'generate a room first' });
-      return;
-    }
-    const json = buildSceneCollectionJson(room);
+    const { room, password } = getRoom();
+    const json = buildSceneCollectionJson(buildLinks(room, password));
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', `attachment; filename="${sceneCollectionFilename(room.room)}"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${sceneCollectionFilename(room)}"`);
     res.send(json);
   });
 
@@ -65,8 +57,4 @@ export function createApp() {
   }
 
   return app;
-}
-
-interface AuthPayload {
-  email: string;
 }

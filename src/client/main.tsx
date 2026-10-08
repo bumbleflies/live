@@ -26,6 +26,14 @@ interface User {
   email: string;
 }
 
+const WINDOW_NAMES = ['Nico', 'Sebi', 'Chris', 'Screen'] as const;
+type WindowName = (typeof WINDOW_NAMES)[number];
+
+// Publish pages inside an iframe need the effective permissions listed here —
+// browsers use allow-list to gate camera/mic in cross-origin frames.
+const IFRAME_ALLOW =
+  'camera; microphone; display-capture; autoplay; fullscreen; clipboard-write';
+
 async function api<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, init);
   if (!res.ok) {
@@ -54,18 +62,99 @@ function LinkRow({ label, link }: { label: string; link: string }) {
   );
 }
 
+function ConfirmRotateModal({
+  busy,
+  onCancel,
+  onConfirm,
+}: {
+  busy: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  return (
+    <div className="modal-backdrop" onClick={busy ? undefined : onCancel}>
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="rotate-title">
+        <h2 id="rotate-title">Rotate room?</h2>
+        <p>
+          All links sent so far stop working: guests need the new links, and OBS needs a
+          one-time re-import of the newly downloaded scene collection. This cannot be
+          undone.
+        </p>
+        <div className="modal-actions">
+          <button className="btn" onClick={onCancel} disabled={busy}>
+            Cancel
+          </button>
+          <button className="btn btn-danger" onClick={onConfirm} disabled={busy}>
+            {busy ? 'Rotating…' : 'Rotate'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StreamWindow({ name, link }: { name: WindowName; link: string }) {
+  const [shown, setShown] = useState(false);
+  const label = name === 'Screen' ? 'Screen (backup slot)' : name;
+  return (
+    <div className="window-card">
+      <div className="window-head">
+        <span className="window-label">{label}</span>
+        <button
+          className={shown ? 'copy-btn' : 'copy-btn copied'}
+          onClick={() => setShown(!shown)}
+        >
+          {shown ? 'hide' : 'join'}
+        </button>
+      </div>
+      {shown ? (
+        <iframe
+          className="window-iframe"
+          src={link}
+          title={`${label} stream window`}
+          allow={IFRAME_ALLOW}
+          referrerPolicy="no-referrer"
+        />
+      ) : (
+        <p className="hint">
+          Your streaming window right here — press join, allow camera and microphone.
+        </p>
+      )}
+      <div className="window-foot">
+        <a href={link} target="_blank" rel="noreferrer">
+          open in new tab
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function Generator({ user }: { user: User }) {
   const [room, setRoom] = useState<Room | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [rotatedNote, setRotatedNote] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const generate = useCallback(async () => {
+  // The room is persistent server-side; loading it is side-effect free.
+  useEffect(() => {
+    api<Room>('/api/room', { method: 'POST' })
+      .then(setRoom)
+      .catch(() => setError('Loading your room failed — reload the page.'));
+  }, []);
+
+  const rotate = useCallback(async () => {
     setBusy(true);
     setError(null);
     try {
-      setRoom(await api<Room>('/api/room', { method: 'POST' }));
+      const next = await api<Room & { rotated: boolean }>('/api/room/rotate', {
+        method: 'POST',
+      });
+      setRoom(next);
+      setRotatedNote(true);
+      setModalOpen(false);
     } catch {
-      setError('Generating a room failed — try again.');
+      setError('Rotating the room failed — try again.');
     } finally {
       setBusy(false);
     }
@@ -90,7 +179,7 @@ function Generator({ user }: { user: User }) {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      setError('Downloading the scene collection failed — generate a room first.');
+      setError('Downloading the scene collection failed — try again.');
     } finally {
       setBusy(false);
     }
@@ -120,69 +209,102 @@ function Generator({ user }: { user: User }) {
           </a>
         </div>
       </header>
-      <div className="actions">
-        <button className="btn btn-primary" onClick={generate} disabled={busy}>
-          Generate new room
-        </button>
-        <button className="btn" onClick={download} disabled={busy || !room}>
-          Download OBS scene collection
-        </button>
-      </div>
+      {rotatedNote && (
+        <p className="rotate-note">
+          Room rotated. Links you sent before are dead — send the new ones, and re-import
+          the freshly downloaded scene collection into OBS (one time).
+          <button className="copy-btn" onClick={() => setRotatedNote(false)}>
+            dismiss
+          </button>
+        </p>
+      )}
       {room && (
-        <div className="result">
+        <>
+          <div className="actions">
+            <button className="btn" onClick={download} disabled={busy}>
+              Download OBS scene collection
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => setModalOpen(true)}
+              disabled={busy}
+            >
+              Rotate room…
+            </button>
+            <a className="btn" href={room.director} target="_blank" rel="noreferrer">
+              Open director
+            </a>
+          </div>
           <p className="credentials">
-            room: <b>{room.room}</b> · password: <b>{room.password}</b>
+            room: <b>{room.room}</b> · password: <b>{room.password}</b> · links are
+            permanent — share once, then keep them pinned.
           </p>
-          <section>
-            <h2>Director</h2>
+          <section className="windows">
+            <h2>Stream windows</h2>
             <p className="warning">
               <span className="warn-star">* </span>
-              Host only, keep private.
+              Each person opens their own card, allows camera and microphone, and is in
+              the room — no separate tab. If the embedded window misbehaves (Safari/iOS),
+              use “open in new tab”.
             </p>
-            <LinkRow label="Director" link={room.director} />
+            <div className="windows-grid">
+              {room.guests.map((g) => (
+                <StreamWindow key={g.name} name={g.name as WindowName} link={g.link} />
+              ))}
+              <StreamWindow name="Screen" link={room.screenShare.guestLink} />
+            </div>
           </section>
-          <section>
-            <h2>Guests</h2>
-            {room.guests.map((g) => (
-              <div key={g.name}>
-                <h3>{g.name}</h3>
-                {g.warning && (
-                  <p className="warning">
-                    <span className="warn-star">* </span>
-                    {g.warning}
-                  </p>
-                )}
-                <LinkRow label={`Guest ${g.name}`} link={g.link} />
-              </div>
-            ))}
-            <h3>Screen share</h3>
-            {room.screenShare.warning && (
+          <div className="result">
+            <section>
+              <h2>Links</h2>
+              {room.guests.map((g) => (
+                <div key={g.name}>
+                  <h3>{g.name}</h3>
+                  {g.warning && (
+                    <p className="warning">
+                      <span className="warn-star">* </span>
+                      {g.warning}
+                    </p>
+                  )}
+                  <LinkRow label={`Guest ${g.name}`} link={g.link} />
+                </div>
+              ))}
+              <h3>Screen share</h3>
+              {room.screenShare.warning && (
+                <p className="warning">
+                  <span className="warn-star">* </span>
+                  {room.screenShare.warning}
+                </p>
+              )}
+              <LinkRow label="Guest Screen (backup slot)" link={room.screenShare.guestLink} />
+            </section>
+            <section>
+              <h2>OBS view links</h2>
               <p className="warning">
                 <span className="warn-star">* </span>
-                {room.screenShare.warning}
+                Browser Source, 1920x1080. All four are baked into the downloadable scene
+                collection — these links are only for manual repair.
               </p>
-            )}
-            <LinkRow label="Guest Screen (backup slot)" link={room.screenShare.guestLink} />
-          </section>
-          <section>
-            <h2>OBS view links</h2>
-            <p className="warning">
-              <span className="warn-star">* </span>
-              Browser Source, 1920x1080. The camera sources are also baked into the
-              downloadable scene collection.
-            </p>
-            {room.obsSources.map((s) => (
-              <LinkRow key={s.name} label={`OBS source ${s.name}`} link={s.link} />
-            ))}
-            <LinkRow label="OBS source Screen" link={room.screenShare.obsLink} />
-          </section>
-        </div>
+              {room.obsSources.map((s) => (
+                <LinkRow key={s.name} label={`OBS source ${s.name}`} link={s.link} />
+              ))}
+              <LinkRow label="OBS source Screen" link={room.screenShare.obsLink} />
+            </section>
+          </div>
+        </>
       )}
       {error && <p className="error">{error}</p>}
       <p className="hint">
-        OBS still needs one manual step: Scene Collection &gt; Import with the downloaded
-        file. The host flow lives in the bumble:live checklist.
+        OBS needs one manual step ever: Scene Collection &gt; Import with the downloaded
+        file. After that, every session reuses the same links.
       </p>
+      {modalOpen && (
+        <ConfirmRotateModal
+          busy={busy}
+          onCancel={() => setModalOpen(false)}
+          onConfirm={rotate}
+        />
+      )}
     </>
   );
 }
@@ -193,7 +315,7 @@ function SignedOut() {
       <h1>
         bumble<span className="accent">:live</span> room setup
       </h1>
-      <p>Generate VDO.Ninja room links and the matching OBS scene collection.</p>
+      <p>Your permanent VDO.Ninja room, stream windows, and OBS scene collection.</p>
       <a className="btn btn-primary" href="/auth/google">
         Sign in with Google
       </a>

@@ -1,5 +1,9 @@
 process.env.JWT_SECRET = 'test-secret';
+process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'live-api-'));
 
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
@@ -63,7 +67,7 @@ describe('auth', () => {
 describe('room + scene-collection endpoints', () => {
   const cookie = `live_token=${tokenFor('host@bumbleflies.de')}`;
 
-  it('generates a room and downloads a matching scene collection', async () => {
+  it('returns the current room resolved from the store', async () => {
     const room = await request(app).post('/api/room').set('Cookie', cookie);
     expect(room.status).toBe(200);
     const body = room.body as {
@@ -71,30 +75,49 @@ describe('room + scene-collection endpoints', () => {
       password: string;
       guests: unknown[];
       obsSources: unknown[];
-      guests_count: number;
     };
     expect(body.room).toMatch(/^bumbleLive[0-9a-f]{4}$/);
     expect(body.guests).toHaveLength(3);
     expect(body.obsSources).toHaveLength(3);
+  });
 
+  it('is idempotent — repeated calls never rotate the room', async () => {
+    const first = await request(app).post('/api/room').set('Cookie', cookie);
+    const second = await request(app).post('/api/room').set('Cookie', cookie);
+    expect(second.body.room).toBe(first.body.room);
+    expect(second.body.password).toBe(first.body.password);
+  });
+
+  it('rotate returns a new room and /api/room follows the rotation', async () => {
+    const before = await request(app).post('/api/room').set('Cookie', cookie);
+    const rotated = await request(app).post('/api/room/rotate').set('Cookie', cookie);
+    expect(rotated.status).toBe(200);
+    expect(rotated.body.room).toMatch(/^bumbleLive[0-9a-f]{4}$/);
+    expect(rotated.body.rotated).toBe(true);
+    expect(rotated.body.room).not.toBe(before.body.room);
+
+    const after = await request(app).post('/api/room').set('Cookie', cookie);
+    expect(after.body.room).toBe(rotated.body.room);
+    expect(after.body.password).toBe(rotated.body.password);
+  });
+
+  it('downloads a scene collection named after the current room', async () => {
+    const room = await request(app).post('/api/room').set('Cookie', cookie);
     const download = await request(app).post('/api/scene-collection').set('Cookie', cookie);
     expect(download.status).toBe(200);
     expect(download.headers['content-type']).toContain('application/json');
     expect(download.headers['content-disposition']).toContain(
-      `filename="Bumbleflies-Live-${body.room}.json"`,
+      `filename="Bumbleflies-Live-${(room.body as { room: string }).room}.json"`,
     );
-  });
-
-  it('scene collection 409s before any room was generated for this user', async () => {
-    const res = await request(app)
+    const disk = await request(app)
       .post('/api/scene-collection')
-      .set('Cookie', `live_token=${tokenFor('fresh@bumbleflies.de')}`);
-    expect(res.status).toBe(409);
+      .set('Cookie', `live_token=${tokenFor('other-user@bumbleflies.de')}`);
+    expect(disk.status).toBe(200);
   });
 
   it('rejects the endpoints without auth', async () => {
-    expect(
-      (await request(app).post('/api/scene-collection')).status,
-    ).toBe(401);
+    expect((await request(app).post('/api/room')).status).toBe(401);
+    expect((await request(app).post('/api/room/rotate')).status).toBe(401);
+    expect((await request(app).post('/api/scene-collection')).status).toBe(401);
   });
 });
