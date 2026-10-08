@@ -1,0 +1,14 @@
+{
+  "encoder": "obs_x264",
+  "rate_control": "CBR",
+  "bitrate_kbps": 8000,
+  "max_bitrate_kbps": 8000,
+  "buffer_kbps": 8000,
+  "keyframe_interval_sec": 2,
+  "preset": "veryfast",
+  "profile": "high",
+  "bframes": 2,
+  "audio_kbps": 160,
+  "audio_rate_hz": 48000,
+  "note": "Default is x264 veryfast because the host box is Intel-only. On a machine with NVIDIA, switch Encoder to ffmpeg_nvenc, preset p5, 9000 Kbps. Keep 1080p30."
+}

@@ -16,20 +16,22 @@ describe('scene-collection transform', () => {
     current_scene: string;
   };
 
-  it('is valid JSON on the wire and keeps the 8 restructured scenes', () => {
+  it('is valid JSON on the wire and keeps the 10 restructured scenes', () => {
     const parsed = JSON.parse(buildSceneCollectionJson(room)) as {
       scene_order: { name: string }[];
       sources: SceneSource[];
     };
     expect(parsed.scene_order.map((s) => s.name)).toEqual([
       '01 Starting',
-      '02 Three',
-      '03 Nico',
-      '04 Sebi',
-      '05 Chris',
-      '06 Screen plus People',
-      '07 Break',
-      '08 End',
+      '02 All hosts',
+      '03 Hosts plus Guest',
+      '04 Hosts plus Screen',
+      '05 Focus Nico',
+      '06 Focus Sebi',
+      '07 Focus Chris',
+      '08 Focus Guest',
+      '09 Break',
+      '10 End',
     ]);
     const sceneNames = parsed.sources
       .filter((s) => s.id === 'scene')
@@ -41,7 +43,7 @@ describe('scene-collection transform', () => {
     const sourceNames = new Set(data.sources.map((s) => s.name));
     const scenes = data.sources.filter((s) => s.id === 'scene');
     // Explicit count so a structurally broken template cannot make this loop a no-op.
-    expect(scenes).toHaveLength(8);
+    expect(scenes).toHaveLength(10);
     for (const scene of scenes) {
       const items = scene.settings?.items as { name: string }[] | undefined;
       expect(items?.length).toBeGreaterThan(0);
@@ -55,6 +57,7 @@ describe('scene-collection transform', () => {
     ['Nico', 'NicoCam'],
     ['Sebi', 'SebiCam'],
     ['Chris', 'ChrisCam'],
+    ['Guest', 'GuestCam'],
     ['Screen', 'ScreenShare'],
   ])('patches %s with view=%s and the generated room/password', (name, push) => {
     const url = data.sources.find((s) => s.name === name)?.settings?.url;

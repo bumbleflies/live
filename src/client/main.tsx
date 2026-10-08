@@ -18,6 +18,7 @@ interface Room {
   password: string;
   director: string;
   guests: GuestLink[];
+  externalGuest: GuestLink;
   obsSources: ObsSource[];
   screenShare: { guestLink: string; obsLink: string; warning?: string };
 }
@@ -26,7 +27,7 @@ interface User {
   email: string;
 }
 
-const WINDOW_NAMES = ['Nico', 'Sebi', 'Chris', 'Screen'] as const;
+const WINDOW_NAMES = ['Nico', 'Sebi', 'Chris', 'Guest', 'Screen'] as const;
 type WindowName = (typeof WINDOW_NAMES)[number];
 
 // Publish pages inside an iframe need the effective permissions listed here —
@@ -93,37 +94,115 @@ function ConfirmRotateModal({
   );
 }
 
-function StreamWindow({ name, link }: { name: WindowName; link: string }) {
-  const [shown, setShown] = useState(false);
+type SceneMode =
+  | { kind: 'all' }
+  | { kind: 'hosts-guest' }
+  | { kind: 'hosts-screen' }
+  | { kind: 'focus'; name: WindowName };
+
+const SCENE_MODES: { mode: SceneMode; label: string }[] = [
+  { mode: { kind: 'all' }, label: 'All hosts equally' },
+  { mode: { kind: 'hosts-guest' }, label: 'Hosts + Guest' },
+  { mode: { kind: 'hosts-screen' }, label: 'Hosts + Screen' },
+  { mode: { kind: 'focus', name: 'Nico' }, label: 'Focus Nico' },
+  { mode: { kind: 'focus', name: 'Sebi' }, label: 'Focus Sebi' },
+  { mode: { kind: 'focus', name: 'Chris' }, label: 'Focus Chris' },
+  { mode: { kind: 'focus', name: 'Guest' }, label: 'Focus Guest' },
+  { mode: { kind: 'focus', name: 'Screen' }, label: 'Focus Screen' },
+];
+
+function Faces(room: Room): Record<WindowName, string> {
+  return {
+    Nico: room.obsSources.find((o) => o.name === 'Nico')!.link,
+    Sebi: room.obsSources.find((o) => o.name === 'Sebi')!.link,
+    Chris: room.obsSources.find((o) => o.name === 'Chris')!.link,
+    Guest: room.obsSources.find((o) => o.name === 'Guest')!.link,
+    Screen: room.screenShare.obsLink,
+  };
+}
+
+/** The "host" publish links for the switch fallback — mirrors the OBS scenarios. */
+function SceneSwitcher({ room }: { room: Room }) {
+  const [mode, setMode] = useState<SceneMode>({ kind: 'all' });
+  const solo = Faces(room);
+  let names: WindowName[];
+  let label: string;
+  if (mode.kind === 'focus') {
+    names = [mode.name];
+    label = `Focus ${mode.name === 'Screen' ? 'Screen (backup slot)' : mode.name}`;
+  } else if (mode.kind === 'hosts-guest') {
+    names = ['Nico', 'Sebi', 'Chris', 'Guest'];
+    label = 'Hosts + Guest';
+  } else if (mode.kind === 'hosts-screen') {
+    names = ['Nico', 'Sebi', 'Chris', 'Screen'];
+    label = 'Hosts + Screen';
+  } else {
+    names = ['Nico', 'Sebi', 'Chris'];
+    label = 'All hosts equally';
+  }
+  return (
+    <div className="scene-block">
+      <div className="scene-modes" role="tablist">
+        {SCENE_MODES.map(({ mode: m, label: l }) => (
+          <button
+            key={l}
+            className={`scene-mode-btn${JSON.stringify(m) === JSON.stringify(mode) ? ' active' : ''}`}
+            onClick={() => setMode(m)}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+      <p className="hint">
+        Live view of what OBS switch picks: {label}
+      </p>
+      <div className={names.length > 1 ? 'scene-panel grid' : 'scene-panel'}>
+        {names.map((n) => (
+          <iframe
+            key={n}
+            src={solo[n]}
+            title={`${label} — ${n}`}
+            allow={IFRAME_ALLOW}
+            referrerPolicy="no-referrer"
+          />
+        ))}
+      </div>
+      <div className="window-foot">
+        {names.length === 1 ? (
+          <a href={names[0] === 'Screen' ? room.screenShare.guestLink : room.guests.find((g) => g.name === names[0])?.link ?? room.externalGuest.link} target="_blank" rel="noreferrer">
+            open {label.replace('Focus ', '')} in new tab
+          </a>
+        ) : (
+          <a href={room.director} target="_blank" rel="noreferrer">
+            open director
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function JoinWindow({ name, link, onClose }: { name: WindowName; link: string; onClose: () => void }) {
   const label = name === 'Screen' ? 'Screen (backup slot)' : name;
   return (
-    <div className="window-card">
-      <div className="window-head">
-        <span className="window-label">{label}</span>
-        <button
-          className={shown ? 'copy-btn' : 'copy-btn copied'}
-          onClick={() => setShown(!shown)}
-        >
-          {shown ? 'hide' : 'join'}
-        </button>
-      </div>
-      {shown ? (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal join-modal" role="dialog" aria-modal="true">
+        <h2>Join as {label}</h2>
+        <p>Allow camera and microphone when asked. Closing the dialog leaves the room.</p>
         <iframe
-          className="window-iframe"
           src={link}
-          title={`${label} stream window`}
+          title={`Publish window ${name}`}
           allow={IFRAME_ALLOW}
           referrerPolicy="no-referrer"
         />
-      ) : (
-        <p className="hint">
-          Your streaming window right here — press join, allow camera and microphone.
-        </p>
-      )}
-      <div className="window-foot">
-        <a href={link} target="_blank" rel="noreferrer">
-          open in new tab
-        </a>
+        <div className="modal-actions">
+          <a className="btn" href={link} target="_blank" rel="noreferrer">
+            open in new tab
+          </a>
+          <button className="btn btn-danger" onClick={onClose}>
+            Leave
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -135,6 +214,7 @@ function Generator({ user }: { user: User }) {
   const [error, setError] = useState<string | null>(null);
   const [rotatedNote, setRotatedNote] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [joinName, setJoinName] = useState<WindowName | null>(null);
 
   // The room is persistent server-side; loading it is side-effect free.
   useEffect(() => {
@@ -194,7 +274,7 @@ function Generator({ user }: { user: User }) {
     <>
       <header className="page-header">
         <div className="brand">
-          bumble<span className="accent">live</span>
+          bumble<span className="accent">:live</span>
         </div>
         <div className="user-email">
           {user.email}
@@ -240,18 +320,26 @@ function Generator({ user }: { user: User }) {
             permanent — share once, then keep them pinned.
           </p>
           <section className="windows">
-            <h2>Stream windows</h2>
+            <h2>Stream monitor</h2>
             <p className="warning">
               <span className="warn-star">* </span>
-              Each person opens their own card, allows camera and microphone, and is in
-              the room — no separate tab. If the embedded window misbehaves (Safari/iOS),
-              use “open in new tab”.
+              The same feeds OBS consumes, laid out like the OBS scenes. Pick a Focus
+              mode to watch one person; “Join as …” opens your own publish window to go
+              on camera right here.
             </p>
-            <div className="windows-grid">
+            <SceneSwitcher room={room} />
+            <div className="join-row">
               {room.guests.map((g) => (
-                <StreamWindow key={g.name} name={g.name as WindowName} link={g.link} />
+                <button key={g.name} className="btn" onClick={() => setJoinName(g.name as WindowName)}>
+                  Join as {g.name}
+                </button>
               ))}
-              <StreamWindow name="Screen" link={room.screenShare.guestLink} />
+              <button className="btn" onClick={() => setJoinName('Guest')}>
+                Join as Guest
+              </button>
+              <button className="btn" onClick={() => setJoinName('Screen')}>
+                Share screen
+              </button>
             </div>
           </section>
           <div className="result">
@@ -266,9 +354,17 @@ function Generator({ user }: { user: User }) {
                       {g.warning}
                     </p>
                   )}
-                  <LinkRow label={`Guest ${g.name}`} link={g.link} />
+                  <LinkRow label={`Host ${g.name}`} link={g.link} />
                 </div>
               ))}
+              <h3>External guest</h3>
+              {room.externalGuest.warning && (
+                <p className="warning">
+                  <span className="warn-star">* </span>
+                  {room.externalGuest.warning}
+                </p>
+              )}
+              <LinkRow label="Guest (external)" link={room.externalGuest.link} />
               <h3>Screen share</h3>
               {room.screenShare.warning && (
                 <p className="warning">
@@ -276,13 +372,13 @@ function Generator({ user }: { user: User }) {
                   {room.screenShare.warning}
                 </p>
               )}
-              <LinkRow label="Guest Screen (backup slot)" link={room.screenShare.guestLink} />
+              <LinkRow label="Screen share" link={room.screenShare.guestLink} />
             </section>
             <section>
               <h2>OBS view links</h2>
               <p className="warning">
                 <span className="warn-star">* </span>
-                Browser Source, 1920x1080. All four are baked into the downloadable scene
+                Browser Source, 1920x1080. All five are baked into the downloadable scene
                 collection — these links are only for manual repair.
               </p>
               {room.obsSources.map((s) => (
@@ -303,6 +399,19 @@ function Generator({ user }: { user: User }) {
           busy={busy}
           onCancel={() => setModalOpen(false)}
           onConfirm={rotate}
+        />
+      )}
+      {joinName && !modalOpen && room && (
+        <JoinWindow
+          name={joinName}
+          link={
+            joinName === 'Screen'
+              ? room.screenShare.guestLink
+              : joinName === 'Guest'
+                ? room.externalGuest.link
+                : room.guests.find((g) => g.name === joinName)!.link
+          }
+          onClose={() => setJoinName(null)}
         />
       )}
     </>

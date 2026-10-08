@@ -5,29 +5,35 @@
    "name": "01 Starting"
   },
   {
-   "name": "02 Three"
+   "name": "02 All hosts"
   },
   {
-   "name": "03 Nico"
+   "name": "03 Hosts plus Guest"
   },
   {
-   "name": "04 Sebi"
+   "name": "04 Hosts plus Screen"
   },
   {
-   "name": "05 Chris"
+   "name": "05 Focus Nico"
   },
   {
-   "name": "06 Screen plus People"
+   "name": "06 Focus Sebi"
   },
   {
-   "name": "07 Break"
+   "name": "07 Focus Chris"
   },
   {
-   "name": "08 End"
+   "name": "08 Focus Guest"
+  },
+  {
+   "name": "09 Break"
+  },
+  {
+   "name": "10 End"
   }
  ],
- "current_scene": "02 Three",
- "current_program_scene": "02 Three",
+ "current_scene": "02 All hosts",
+ "current_program_scene": "02 All hosts",
  "current_transition": "Fade",
  "transition_duration": 300,
  "transitions": [],
@@ -198,6 +204,41 @@
    "versioned_id": "browser_source",
    "settings": {
     "url": "https://vdo.ninja/?view=ScreenShare&solo&room=REPLACE_ROOM",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fps_custom": false,
+    "shutdown": true,
+    "restart_when_active": false,
+    "reroute_audio": false,
+    "webpage_control_level": 1
+   },
+   "mixers": 255,
+   "sync": 0,
+   "flags": 0,
+   "volume": 1.0,
+   "balance": 0.5,
+   "enabled": true,
+   "muted": false,
+   "push-to-mute": false,
+   "push-to-mute-delay": 0,
+   "push-to-talk": false,
+   "push-to-talk-delay": 0,
+   "hotkeys": {},
+   "deinterlace_mode": 0,
+   "deinterlace_field_order": 0,
+   "monitoring_type": 0,
+   "private_settings": {},
+   "filters": []
+  },
+  {
+   "prev_ver": 537001984,
+   "name": "Guest",
+   "uuid": "60606060-6060-4606-8606-606060606060",
+   "id": "browser_source",
+   "versioned_id": "browser_source",
+   "settings": {
+    "url": "https://vdo.ninja/?view=GuestCam&solo&room=REPLACE_ROOM",
     "width": 1920,
     "height": 1080,
     "fps": 30,
@@ -481,7 +522,7 @@
   },
   {
    "prev_ver": 537001984,
-   "name": "02 Three",
+   "name": "02 All hosts",
    "uuid": "a0000000-0000-4000-a000-000000000002",
    "id": "scene",
    "versioned_id": "scene",
@@ -706,12 +747,12 @@
   },
   {
    "prev_ver": 537001984,
-   "name": "03 Nico",
-   "uuid": "a0000000-0000-4000-a000-000000000011",
+   "name": "03 Hosts plus Guest",
+   "uuid": "a0000000-0000-4000-a000-000000000101",
    "id": "scene",
    "versioned_id": "scene",
    "settings": {
-    "id_counter": 4,
+    "id_counter": 7,
     "custom_size": false,
     "items": [
      {
@@ -732,11 +773,11 @@
       "group_item_backup": false,
       "pos": {
        "x": 0.0,
-       "y": 0.0
+       "y": 405.0
       },
       "scale": {
-       "x": 1.0,
-       "y": 1.0
+       "x": 0.25,
+       "y": 0.25
       },
       "bounds": {
        "x": 0.0,
@@ -753,114 +794,6 @@
       },
       "private_settings": {}
      },
-     {
-      "name": "Bug",
-      "source_uuid": "99999999-9999-4999-8999-999999999999",
-      "visible": true,
-      "locked": false,
-      "rot": 0.0,
-      "align": 5,
-      "bounds_type": 0,
-      "bounds_align": 0,
-      "bounds_crop": false,
-      "crop_left": 0,
-      "crop_top": 0,
-      "crop_right": 0,
-      "crop_bottom": 0,
-      "id": 2,
-      "group_item_backup": false,
-      "pos": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale": {
-       "x": 1.0,
-       "y": 1.0
-      },
-      "bounds": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale_filter": "lanczos",
-      "blend_method": "default",
-      "blend_type": "normal",
-      "show_transition": {
-       "duration": 0
-      },
-      "hide_transition": {
-       "duration": 0
-      },
-      "private_settings": {}
-     },
-     {
-      "name": "Lower Thirds",
-      "source_uuid": "88888888-8888-4888-8888-888888888888",
-      "visible": true,
-      "locked": false,
-      "rot": 0.0,
-      "align": 5,
-      "bounds_type": 0,
-      "bounds_align": 0,
-      "bounds_crop": false,
-      "crop_left": 0,
-      "crop_top": 0,
-      "crop_right": 0,
-      "crop_bottom": 0,
-      "id": 3,
-      "group_item_backup": false,
-      "pos": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale": {
-       "x": 1.0,
-       "y": 1.0
-      },
-      "bounds": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale_filter": "lanczos",
-      "blend_method": "default",
-      "blend_type": "normal",
-      "show_transition": {
-       "duration": 0
-      },
-      "hide_transition": {
-       "duration": 0
-      },
-      "private_settings": {}
-     }
-    ]
-   },
-   "mixers": 0,
-   "sync": 0,
-   "flags": 0,
-   "volume": 1.0,
-   "balance": 0.5,
-   "enabled": true,
-   "muted": false,
-   "push-to-mute": false,
-   "push-to-mute-delay": 0,
-   "push-to-talk": false,
-   "push-to-talk-delay": 0,
-   "hotkeys": {},
-   "deinterlace_mode": 0,
-   "deinterlace_field_order": 0,
-   "monitoring_type": 0,
-   "private_settings": {},
-   "filters": []
-  },
-  {
-   "prev_ver": 537001984,
-   "name": "04 Sebi",
-   "uuid": "a0000000-0000-4000-a000-000000000012",
-   "id": "scene",
-   "versioned_id": "scene",
-   "settings": {
-    "id_counter": 4,
-    "custom_size": false,
-    "items": [
      {
       "name": "Sebi",
       "source_uuid": "22222222-2222-4222-8222-222222222222",
@@ -875,54 +808,15 @@
       "crop_top": 0,
       "crop_right": 0,
       "crop_bottom": 0,
-      "id": 1,
-      "group_item_backup": false,
-      "pos": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale": {
-       "x": 1.0,
-       "y": 1.0
-      },
-      "bounds": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale_filter": "lanczos",
-      "blend_method": "default",
-      "blend_type": "normal",
-      "show_transition": {
-       "duration": 0
-      },
-      "hide_transition": {
-       "duration": 0
-      },
-      "private_settings": {}
-     },
-     {
-      "name": "Bug",
-      "source_uuid": "99999999-9999-4999-8999-999999999999",
-      "visible": true,
-      "locked": false,
-      "rot": 0.0,
-      "align": 5,
-      "bounds_type": 0,
-      "bounds_align": 0,
-      "bounds_crop": false,
-      "crop_left": 0,
-      "crop_top": 0,
-      "crop_right": 0,
-      "crop_bottom": 0,
       "id": 2,
       "group_item_backup": false,
       "pos": {
-       "x": 0.0,
-       "y": 0.0
+       "x": 480.0,
+       "y": 405.0
       },
       "scale": {
-       "x": 1.0,
-       "y": 1.0
+       "x": 0.25,
+       "y": 0.25
       },
       "bounds": {
        "x": 0.0,
@@ -939,75 +833,6 @@
       },
       "private_settings": {}
      },
-     {
-      "name": "Lower Thirds",
-      "source_uuid": "88888888-8888-4888-8888-888888888888",
-      "visible": true,
-      "locked": false,
-      "rot": 0.0,
-      "align": 5,
-      "bounds_type": 0,
-      "bounds_align": 0,
-      "bounds_crop": false,
-      "crop_left": 0,
-      "crop_top": 0,
-      "crop_right": 0,
-      "crop_bottom": 0,
-      "id": 3,
-      "group_item_backup": false,
-      "pos": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale": {
-       "x": 1.0,
-       "y": 1.0
-      },
-      "bounds": {
-       "x": 0.0,
-       "y": 0.0
-      },
-      "scale_filter": "lanczos",
-      "blend_method": "default",
-      "blend_type": "normal",
-      "show_transition": {
-       "duration": 0
-      },
-      "hide_transition": {
-       "duration": 0
-      },
-      "private_settings": {}
-     }
-    ]
-   },
-   "mixers": 0,
-   "sync": 0,
-   "flags": 0,
-   "volume": 1.0,
-   "balance": 0.5,
-   "enabled": true,
-   "muted": false,
-   "push-to-mute": false,
-   "push-to-mute-delay": 0,
-   "push-to-talk": false,
-   "push-to-talk-delay": 0,
-   "hotkeys": {},
-   "deinterlace_mode": 0,
-   "deinterlace_field_order": 0,
-   "monitoring_type": 0,
-   "private_settings": {},
-   "filters": []
-  },
-  {
-   "prev_ver": 537001984,
-   "name": "05 Chris",
-   "uuid": "a0000000-0000-4000-a000-000000000013",
-   "id": "scene",
-   "versioned_id": "scene",
-   "settings": {
-    "id_counter": 4,
-    "custom_size": false,
-    "items": [
      {
       "name": "Chris",
       "source_uuid": "33333333-3333-4333-8333-333333333333",
@@ -1022,15 +847,54 @@
       "crop_top": 0,
       "crop_right": 0,
       "crop_bottom": 0,
-      "id": 1,
+      "id": 3,
       "group_item_backup": false,
       "pos": {
+       "x": 960.0,
+       "y": 405.0
+      },
+      "scale": {
+       "x": 0.25,
+       "y": 0.25
+      },
+      "bounds": {
        "x": 0.0,
        "y": 0.0
       },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Guest",
+      "source_uuid": "60606060-6060-4606-8606-606060606060",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 4,
+      "group_item_backup": false,
+      "pos": {
+       "x": 1440.0,
+       "y": 405.0
+      },
       "scale": {
-       "x": 1.0,
-       "y": 1.0
+       "x": 0.25,
+       "y": 0.25
       },
       "bounds": {
        "x": 0.0,
@@ -1061,7 +925,7 @@
       "crop_top": 0,
       "crop_right": 0,
       "crop_bottom": 0,
-      "id": 2,
+      "id": 5,
       "group_item_backup": false,
       "pos": {
        "x": 0.0,
@@ -1100,7 +964,7 @@
       "crop_top": 0,
       "crop_right": 0,
       "crop_bottom": 0,
-      "id": 3,
+      "id": 6,
       "group_item_backup": false,
       "pos": {
        "x": 0.0,
@@ -1147,7 +1011,7 @@
   },
   {
    "prev_ver": 537001984,
-   "name": "06 Screen plus People",
+   "name": "04 Hosts plus Screen",
    "uuid": "a0000000-0000-4000-a000-000000000005",
    "id": "scene",
    "versioned_id": "scene",
@@ -1372,7 +1236,595 @@
   },
   {
    "prev_ver": 537001984,
-   "name": "07 Break",
+   "name": "05 Focus Nico",
+   "uuid": "a0000000-0000-4000-a000-000000000011",
+   "id": "scene",
+   "versioned_id": "scene",
+   "settings": {
+    "id_counter": 4,
+    "custom_size": false,
+    "items": [
+     {
+      "name": "Nico",
+      "source_uuid": "11111111-1111-4111-8111-111111111111",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 1,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Bug",
+      "source_uuid": "99999999-9999-4999-8999-999999999999",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 2,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Lower Thirds",
+      "source_uuid": "88888888-8888-4888-8888-888888888888",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 3,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     }
+    ]
+   },
+   "mixers": 0,
+   "sync": 0,
+   "flags": 0,
+   "volume": 1.0,
+   "balance": 0.5,
+   "enabled": true,
+   "muted": false,
+   "push-to-mute": false,
+   "push-to-mute-delay": 0,
+   "push-to-talk": false,
+   "push-to-talk-delay": 0,
+   "hotkeys": {},
+   "deinterlace_mode": 0,
+   "deinterlace_field_order": 0,
+   "monitoring_type": 0,
+   "private_settings": {},
+   "filters": []
+  },
+  {
+   "prev_ver": 537001984,
+   "name": "06 Focus Sebi",
+   "uuid": "a0000000-0000-4000-a000-000000000012",
+   "id": "scene",
+   "versioned_id": "scene",
+   "settings": {
+    "id_counter": 4,
+    "custom_size": false,
+    "items": [
+     {
+      "name": "Sebi",
+      "source_uuid": "22222222-2222-4222-8222-222222222222",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 1,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Bug",
+      "source_uuid": "99999999-9999-4999-8999-999999999999",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 2,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Lower Thirds",
+      "source_uuid": "88888888-8888-4888-8888-888888888888",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 3,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     }
+    ]
+   },
+   "mixers": 0,
+   "sync": 0,
+   "flags": 0,
+   "volume": 1.0,
+   "balance": 0.5,
+   "enabled": true,
+   "muted": false,
+   "push-to-mute": false,
+   "push-to-mute-delay": 0,
+   "push-to-talk": false,
+   "push-to-talk-delay": 0,
+   "hotkeys": {},
+   "deinterlace_mode": 0,
+   "deinterlace_field_order": 0,
+   "monitoring_type": 0,
+   "private_settings": {},
+   "filters": []
+  },
+  {
+   "prev_ver": 537001984,
+   "name": "07 Focus Chris",
+   "uuid": "a0000000-0000-4000-a000-000000000013",
+   "id": "scene",
+   "versioned_id": "scene",
+   "settings": {
+    "id_counter": 4,
+    "custom_size": false,
+    "items": [
+     {
+      "name": "Chris",
+      "source_uuid": "33333333-3333-4333-8333-333333333333",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 1,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Bug",
+      "source_uuid": "99999999-9999-4999-8999-999999999999",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 2,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Lower Thirds",
+      "source_uuid": "88888888-8888-4888-8888-888888888888",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 3,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     }
+    ]
+   },
+   "mixers": 0,
+   "sync": 0,
+   "flags": 0,
+   "volume": 1.0,
+   "balance": 0.5,
+   "enabled": true,
+   "muted": false,
+   "push-to-mute": false,
+   "push-to-mute-delay": 0,
+   "push-to-talk": false,
+   "push-to-talk-delay": 0,
+   "hotkeys": {},
+   "deinterlace_mode": 0,
+   "deinterlace_field_order": 0,
+   "monitoring_type": 0,
+   "private_settings": {},
+   "filters": []
+  },
+  {
+   "prev_ver": 537001984,
+   "name": "08 Focus Guest",
+   "uuid": "a0000000-0000-4000-a000-000000000102",
+   "id": "scene",
+   "versioned_id": "scene",
+   "settings": {
+    "id_counter": 4,
+    "custom_size": false,
+    "items": [
+     {
+      "name": "Guest",
+      "source_uuid": "60606060-6060-4606-8606-606060606060",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 1,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Bug",
+      "source_uuid": "99999999-9999-4999-8999-999999999999",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 2,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     },
+     {
+      "name": "Lower Thirds",
+      "source_uuid": "88888888-8888-4888-8888-888888888888",
+      "visible": true,
+      "locked": false,
+      "rot": 0.0,
+      "align": 5,
+      "bounds_type": 0,
+      "bounds_align": 0,
+      "bounds_crop": false,
+      "crop_left": 0,
+      "crop_top": 0,
+      "crop_right": 0,
+      "crop_bottom": 0,
+      "id": 3,
+      "group_item_backup": false,
+      "pos": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale": {
+       "x": 1.0,
+       "y": 1.0
+      },
+      "bounds": {
+       "x": 0.0,
+       "y": 0.0
+      },
+      "scale_filter": "lanczos",
+      "blend_method": "default",
+      "blend_type": "normal",
+      "show_transition": {
+       "duration": 0
+      },
+      "hide_transition": {
+       "duration": 0
+      },
+      "private_settings": {}
+     }
+    ]
+   },
+   "mixers": 0,
+   "sync": 0,
+   "flags": 0,
+   "volume": 1.0,
+   "balance": 0.5,
+   "enabled": true,
+   "muted": false,
+   "push-to-mute": false,
+   "push-to-mute-delay": 0,
+   "push-to-talk": false,
+   "push-to-talk-delay": 0,
+   "hotkeys": {},
+   "deinterlace_mode": 0,
+   "deinterlace_field_order": 0,
+   "monitoring_type": 0,
+   "private_settings": {},
+   "filters": []
+  },
+  {
+   "prev_ver": 537001984,
+   "name": "09 Break",
    "uuid": "a0000000-0000-4000-a000-000000000006",
    "id": "scene",
    "versioned_id": "scene",
@@ -1441,7 +1893,7 @@
   },
   {
    "prev_ver": 537001984,
-   "name": "08 End",
+   "name": "10 End",
    "uuid": "a0000000-0000-4000-a000-000000000007",
    "id": "scene",
    "versioned_id": "scene",

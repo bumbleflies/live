@@ -78,7 +78,8 @@ describe('room + scene-collection endpoints', () => {
     };
     expect(body.room).toMatch(/^bumbleLive[0-9a-f]{4}$/);
     expect(body.guests).toHaveLength(3);
-    expect(body.obsSources).toHaveLength(3);
+    expect(body.guests.length + (body.obsSources as unknown[]).length).toBe(7);
+    expect((body.externalGuest as { name: string }).name).toBe('Guest');
   });
 
   it('is idempotent — repeated calls never rotate the room', async () => {
