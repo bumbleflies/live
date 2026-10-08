@@ -56,6 +56,21 @@ function CopyBtn({ text, label }: { text: string; label?: string }) {
   );
 }
 
+/**
+ * Inline warning marker: a star that reveals its text as a tooltip on hover or
+ * keyboard focus — replaces full-text warning paragraphs repeated per section.
+ */
+function TooltipStar({ children }: { children: string }) {
+  return (
+    <span className="tooltip" tabIndex={0} role="note" aria-label={children}>
+      <span className="warn-star" aria-hidden="true">
+        *
+      </span>
+      <span className="tooltip-bubble">{children}</span>
+    </span>
+  );
+}
+
 function ConfirmRotateModal({
   busy,
   onCancel,
@@ -313,13 +328,14 @@ function Generator({ user }: { user: User }) {
             permanent — share once, then keep them pinned.
           </p>
           <section className="windows">
-            <h2>Stream monitor</h2>
-            <p className="warning">
-              <span className="warn-star">* </span>
-              The same feeds OBS consumes, laid out like the OBS scenes. Pick a Focus
-              mode to watch one person; “Join as …” opens your own publish window to go
-              on camera right here.
-            </p>
+            <h2>
+              Stream monitor{' '}
+              <TooltipStar>
+                The same feeds OBS consumes, laid out like the OBS scenes. Pick a Focus
+                mode to watch one person; “Join as …” opens your own publish window to go
+                on camera right here.
+              </TooltipStar>
+            </h2>
             <SceneSwitcher room={room} />
             <div className="join-row">
               {room.guests.map((g) => (
@@ -335,88 +351,78 @@ function Generator({ user }: { user: User }) {
               </button>
             </div>
           </section>
+          <section>
+            <h2>
+              Guest access links{' '}
+              <TooltipStar>
+                For people outside bumbleflies. Each link opens this site in guest mode,
+                bound to one person: they can join and control the room via the director —
+                but they cannot manage it, and the bumbleflies tools stay behind the
+                Google gate. Handle them like keys; rotating the room revokes all of them.
+              </TooltipStar>
+            </h2>
+            <div className="share-row">
+              {room.guests.map((g) => (
+                <CopyBtn
+                  key={g.name}
+                  text={buildShareUrl(window.location.origin, {
+                    room: room.room,
+                    password: room.password,
+                    person: g.name,
+                  })}
+                  label={`Copy guest link · ${g.name}`}
+                />
+              ))}
+              <CopyBtn
+                text={buildShareUrl(window.location.origin, {
+                  room: room.room,
+                  password: room.password,
+                  person: 'Guest',
+                })}
+                label="Copy guest link · Guest"
+              />
+              <CopyBtn
+                text={buildShareUrl(window.location.origin, {
+                  room: room.room,
+                  password: room.password,
+                  person: 'Screen',
+                })}
+                label="Copy guest link · Screen"
+              />
+            </div>
+          </section>
           <div className="result">
             <section>
               <h2>Links</h2>
               {room.guests.map((g) => (
                 <div key={g.name}>
-                  <h3>{g.name}</h3>
-                  {g.warning && (
-                    <p className="warning">
-                      <span className="warn-star">* </span>
-                      {g.warning}
-                    </p>
-                  )}
+                  <h3>
+                    {g.name} <TooltipStar>{g.warning ?? ''}</TooltipStar>
+                  </h3>
                   <LinkRow label={`Host ${g.name}`} link={g.link} />
                 </div>
               ))}
-              <h3>External guest</h3>
-              {room.externalGuest.warning && (
-                <p className="warning">
-                  <span className="warn-star">* </span>
-                  {room.externalGuest.warning}
-                </p>
-              )}
+              <h3>
+                External guest <TooltipStar>{room.externalGuest.warning}</TooltipStar>
+              </h3>
               <LinkRow label="Guest (external)" link={room.externalGuest.link} />
-              <h3>Screen share</h3>
-              {room.screenShare.warning && (
-                <p className="warning">
-                  <span className="warn-star">* </span>
-                  {room.screenShare.warning}
-                </p>
-              )}
+              <h3>
+                Screen share <TooltipStar>{room.screenShare.warning ?? ''}</TooltipStar>
+              </h3>
               <LinkRow label="Screen share" link={room.screenShare.guestLink} />
             </section>
             <section>
-              <h2>OBS view links</h2>
-              <p className="warning">
-                <span className="warn-star">* </span>
-                Browser Source, 1920x1080. All five are baked into the downloadable scene
-                collection — these links are only for manual repair.
-              </p>
+              <h2>
+                OBS view links{' '}
+                <TooltipStar>
+                  Browser Source, 1920x1080. All five are baked into the downloadable scene
+                  collection — these links are only for manual repair.
+                </TooltipStar>
+              </h2>
               {room.obsSources.map((s) => (
                 <LinkRow key={s.name} label={`OBS source ${s.name}`} link={s.link} />
               ))}
               <LinkRow label="OBS source Screen" link={room.screenShare.obsLink} />
-            </section>
-            <section>
-              <h2>Guest access links</h2>
-              <p className="warning">
-                <span className="warn-star">* </span>
-                For people outside bumbleflies. Each link opens this site in guest mode,
-                bound to one person: they can join and control the room via the director —
-                but they cannot manage it, and the bumbleflies tools stay behind the
-                Google gate. Handle them like keys; rotating the room revokes all of them.
-              </p>
-              <div className="share-row">
-                {room.guests.map((g) => (
-                  <CopyBtn
-                    key={g.name}
-                    text={buildShareUrl(window.location.origin, {
-                      room: room.room,
-                      password: room.password,
-                      person: g.name,
-                    })}
-                    label={`Copy guest link · ${g.name}`}
-                  />
-                ))}
-                <CopyBtn
-                  text={buildShareUrl(window.location.origin, {
-                    room: room.room,
-                    password: room.password,
-                    person: 'Guest',
-                  })}
-                  label="Copy guest link · Guest"
-                />
-                <CopyBtn
-                  text={buildShareUrl(window.location.origin, {
-                    room: room.room,
-                    password: room.password,
-                    person: 'Screen',
-                  })}
-                  label="Copy guest link · Screen"
-                />
-              </div>
             </section>
           </div>
         </>
@@ -476,13 +482,15 @@ function GuestView({ share }: { share: { room: string; password: string; person?
       </header>
       <div className="windows">
         <section>
-          <h2>Your window{joinName ? ` · ${joinName === 'Screen' ? 'Share screen' : joinName}` : ''}</h2>
-          <p className="warning">
-            <span className="warn-star">* </span>
-            Allow camera and microphone when asked. Background blur does not work via the
-            link — enable it after joining, via the camera/video icon toolbar. Headphones
-            strongly recommended (echoes otherwise).
-          </p>
+          <h2>
+            Your window
+            {joinName ? ` · ${joinName === 'Screen' ? 'Share screen' : joinName}` : ''}{' '}
+            <TooltipStar>
+              Allow camera and microphone when asked. Background blur does not work via the
+              link — enable it after joining, via the camera/video icon toolbar. Headphones
+              strongly recommended (echoes otherwise).
+            </TooltipStar>
+          </h2>
           {joinName ? (
             <div className="scene-panel">
               <iframe
@@ -533,13 +541,14 @@ function GuestView({ share }: { share: { room: string; password: string; person?
           <SceneSwitcher room={room} />
         </section>
         <section>
-          <h2>Control the show</h2>
-          <p className="warning">
-            <span className="warn-star">* </span>
-            The director lets you mute, spotlight and solo people — the production side of
-            the room. You do not get room or OBS management: those stay with the bumbleflies
-            team.
-          </p>
+          <h2>
+            Control the show{' '}
+            <TooltipStar>
+              The director lets you mute, spotlight and solo people — the production side of
+              the room. You do not get room or OBS management: those stay with the bumbleflies
+              team.
+            </TooltipStar>
+          </h2>
           <a className="btn btn-primary" href={room.director} target="_blank" rel="noreferrer">
             Open director (room control)
           </a>

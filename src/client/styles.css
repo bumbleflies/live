@@ -417,18 +417,48 @@ a {
   border-color: var(--accent-dark);
 }
 
-.warning {
-  color: var(--ink-soft);
-  font-size: var(--text-sm);
-  font-style: italic;
-  padding: var(--space-xs) 0 var(--space-sm);
-  border-bottom: 1px solid var(--rule);
-  margin: 0;
+/* Inline warning marker with tooltip (hover or keyboard focus) */
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+  vertical-align: baseline;
 }
 
-.warning .warn-star {
+.tooltip .warn-star {
   color: var(--accent-dark);
   font-style: normal;
+  font-weight: 700;
+}
+
+.tooltip:focus-visible {
+  outline: 1px solid var(--accent-dark);
+}
+
+.tooltip-bubble {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: -8px;
+  z-index: 20;
+  width: max-content;
+  max-width: 22rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-style: normal;
+  line-height: var(--lh-body);
+  padding: var(--space-sm) var(--space-md);
+  white-space: normal;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(26, 23, 20, 0.35);
+}
+
+.tooltip:hover .tooltip-bubble,
+.tooltip:focus .tooltip-bubble {
+  display: block;
 }
 
 .credentials {
