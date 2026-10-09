@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/bumbleflies/live/compare/live-v0.7.0...live-v0.8.0) (2026-10-09)
+
+
+### Features
+
+* **seo:** outreach slogan, proofread, no em dashes ([888eddf](https://github.com/bumbleflies/live/commit/888eddf767b19b930559da19ac4bb8be411e1f06))
+
 ## [0.7.0](https://github.com/bumbleflies/live/compare/live-v0.6.2...live-v0.7.0) (2026-10-09)
 
 
