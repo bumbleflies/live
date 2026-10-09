@@ -3,11 +3,12 @@ import { createRoot } from 'react-dom/client';
 import {
   buildFacadeRoom,
   buildShareHash,
-  buildShareUrl,
   parseAccessCode,
   parseShareHash,
   type Room,
 } from './lib/share';
+import { LinkRow } from './components/links';
+import { GuestAccessLinks } from './components/GuestAccessLinks';
 import './styles.css';
 
 interface User {
@@ -28,32 +29,6 @@ async function api<T>(url: string, init?: RequestInit): Promise<T> {
     throw new Error(`request failed: ${res.status}`);
   }
   return res.json() as Promise<T>;
-}
-
-function LinkRow({ label, link }: { label: string; link: string }) {
-  return (
-    <div className="link-row">
-      <span className="link-label">{label}</span>
-      <a className="link-value" href={link} target="_blank" rel="noreferrer">
-        {link}
-      </a>
-      <CopyBtn text={link} />
-    </div>
-  );
-}
-
-function CopyBtn({ text, label }: { text: string; label?: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = useCallback(async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }, [text]);
-  return (
-    <button className={`copy-btn${copied ? ' copied' : ''}`} onClick={copy}>
-      {copied ? 'copied' : label ?? 'copy'}
-    </button>
-  );
 }
 
 /**
@@ -366,35 +341,7 @@ function Generator({ user }: { user: User }) {
                 Google gate. Handle them like keys; rotating the room revokes all of them.
               </TooltipStar>
             </h2>
-            <div className="share-row">
-              {room.guests.map((g) => (
-                <CopyBtn
-                  key={g.name}
-                  text={buildShareUrl(window.location.origin, {
-                    room: room.room,
-                    password: room.password,
-                    person: g.name,
-                  })}
-                  label={`Copy guest link · ${g.name}`}
-                />
-              ))}
-              <CopyBtn
-                text={buildShareUrl(window.location.origin, {
-                  room: room.room,
-                  password: room.password,
-                  person: 'Guest',
-                })}
-                label="Copy guest link · Guest"
-              />
-              <CopyBtn
-                text={buildShareUrl(window.location.origin, {
-                  room: room.room,
-                  password: room.password,
-                  person: 'Screen',
-                })}
-                label="Copy guest link · Screen"
-              />
-            </div>
+            <GuestAccessLinks origin={window.location.origin} room={room} />
           </section>
           <div className="result">
             <section>
