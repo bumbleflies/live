@@ -1,52 +1,52 @@
-# bumble:live — Full Content Summary
+# bumble:live · Full Content Summary
 
-> Login-gated sidecar app for the bumbleflies live show: generates permanent `bumble:live` VDO.Ninja room links and the matching OBS scene-collection download. Members manage the room; show guests join via personal access links.
+> Conversations worth watching: the live show from bumbleflies. Members manage the room here; show guests join via personal access links.
 
-`bumble:live` is the live show format of bumbleflies, a Munich-based team. The app at https://live.bumbleflies.de removes the terminal step from show setup: instead of running a local link-generator script, a member signs in with Google and clicks. The server generates the room (alphanumeric id + password), returns the full link set, and serves a pre-patched OBS scene collection that already points at the new room.
+`bumble:live` is the live show format of bumbleflies, a Munich-based team. The app at https://live.bumbleflies.de removes the terminal step from show setup: instead of running a local link-generator script, a member signs in with Google and clicks. The server generates the room (alphanumeric id plus password), returns the full link set, and serves a pre-patched OBS scene collection that already points at the new room.
 
 ---
 
 ## What the app does
 
-Signed-in members get the 11 links (director, 3 hosts + external guest, 4+1 OBS view sources, screen share + OBS) with the hard-won warnings inline, a scene-aware stream monitor and in-page join windows, and a download of the patched 8-scene OBS scene collection (`03 Nico` / `04 Sebi` / `05 Chris` solo scenes). Links are permanent, so OBS is imported once ever. Everything else — stream key, YouTube event, profiles — stays with the bumble:live runbook.
+Signed-in members get the 11 links (director, 3 hosts plus external guest, 4 plus 1 OBS view sources, screen share plus OBS) with the hard-won warnings inline, a scene-aware stream monitor and in-page join windows, and a download of the patched 8-scene OBS scene collection (`03 Nico` / `04 Sebi` / `05 Chris` solo scenes). Links are permanent, so OBS is imported once ever. Everything else (stream key, YouTube event, profiles) stays with the bumble:live runbook.
 
 Room endpoints:
 
-- `POST /api/room` — current room + links (never rotates, idempotent).
-- `POST /api/room/rotate` — new room/password; invalidates every previously sent link; OBS then needs a one-time re-import. The UI warns before and after (real modal + inline banner).
-- `POST /api/scene-collection` — OBS file for the current room.
+- `POST /api/room`: current room plus links (never rotates, idempotent).
+- `POST /api/room/rotate`: new room and password; invalidates every previously sent link; OBS then needs a one-time re-import. The UI warns before and after (real modal plus inline banner).
+- `POST /api/scene-collection`: OBS file for the current room.
 
-Storage: one JSON file (`state.json` under `DATA_DIR`), atomic replace, self-heals on corrupt/missing input. No database; the signed JWT (`live_token` cookie, 12h) carries auth state.
+Storage: one JSON file (`state.json` under `DATA_DIR`), atomic replace, self-heals on corrupt or missing input. No database; the signed JWT (`live_token` cookie, 12h) carries auth state.
 
 ---
 
 ## Access tiers: public / guest / bumbleflies
 
-- **Public** (root, no link): a static landing — what the show is, Google sign-in for bumbleflies members, and an "Open access link" field that accepts a full guest URL, the `#…` code fragment, or a bare `r=…&p=…` code. Zero API calls, zero room secrets.
-- **Guest** (hash capability `#r=…&p=…&person=X`): anonymous personal page bound to one person — their own camera/publish window, the full scene monitor (watch what OBS sees), and the VDO.Ninja **director** for room control (mute/spot/solo). Guests cannot manage: rotate, OBS scene collection download and the links list stay behind the bumbleflies Google gate. Per-person binding is UI policy, not cryptography — the fragment contains everything, so handle guest links like keys; rotating the room revokes every guest link.
-- **Bumbleflies** (Google session): full room management incl. guest-link creation ("Guest access links" section), rotate, scene collection.
+- **Public** (root, no link): a static landing that explains what the show is, with Google sign-in for bumbleflies members and an "Open access link" field that accepts a full guest URL, the `#…` code fragment, or a bare `r=…&p=…` code. Zero API calls, zero room secrets.
+- **Guest** (hash capability `#r=…&p=…&person=X`): an anonymous personal page bound to one person, with their own camera and publish window, the full scene monitor (watch what OBS sees), and the VDO.Ninja **director** for room control (mute, spot, solo). Guests cannot manage anything: rotate, the OBS scene collection download, and the links list stay behind the bumbleflies Google gate. Per-person binding is UI policy, not cryptography. The fragment contains everything, so handle guest links like keys; rotating the room revokes every guest link.
+- **Bumbleflies** (Google session): full room management, including guest-link creation ("Guest access links" section), rotate, and the scene collection.
 
-The secret in guest links lives in the URL fragment, which browsers never send to the server (no access logs, no API traffic). Guest flows make zero authenticated calls — the bumbleflies-only OAuth client remains the sole gate to any privileged endpoint.
+The secret in guest links lives in the URL fragment, which browsers never send to the server (no access logs, no API traffic). Guest flows make zero authenticated calls. The bumbleflies-only OAuth client remains the sole gate to any privileged endpoint.
 
 ---
 
-## Stream monitor & join windows (embedded VDO.Ninja)
+## Stream monitor and join windows (embedded VDO.Ninja)
 
-The signed-in page mirrors the OBS scenarios: a **stream monitor** panel with the 8 scene modes (`All hosts equally`, `Hosts + Guest`, `Hosts + Screen`, one Focus per person), composed in CSS from the documented solo `view=<id>&solo` links — the same feeds OBS consumes. **Join as …** opens a publish window (the person's guest link) right on the page; anyone signed in can go on camera without leaving the site.
+The signed-in page mirrors the OBS scenarios: a **stream monitor** panel with the 8 scene modes (`All hosts equally`, `Hosts + Guest`, `Hosts + Screen`, one Focus per person), composed in CSS from the documented solo `view=<id>&solo` links (the same feeds OBS consumes). **Join as …** opens a publish window (the person's guest link) right on the page; anyone signed in can go on camera without leaving the site.
 
-Permissions: iframes use `allow="camera; microphone; display-capture; autoplay; fullscreen"`. The "open in new tab" fallback is the escape hatch for Safari/iOS or browser-popout restrictions; the director stays a plain link.
+Permissions: iframes use `allow="camera; microphone; display-capture; autoplay; fullscreen"`. The "open in new tab" fallback is the escape hatch for Safari, iOS, or browser-popout restrictions; the director stays a plain link.
 
 ---
 
 ## Auth model
 
-Google OAuth20 against the shared bumbleflies-only Google OAuth client (the Workspace configuration is the access boundary), JWT in an `httpOnly` cookie — same model as the `queen` app. Server-side access is additionally defended in code with an `email.endsWith('@bumbleflies.de')` check. Fresh `JWT_SECRET` per app, never reused from queen.
+Google OAuth20 against the shared bumbleflies-only Google OAuth client (the Workspace configuration is the access boundary), JWT in an `httpOnly` cookie. Same model as the `queen` app. Server-side access is additionally defended in code with an `email.endsWith('@bumbleflies.de')` check. Fresh `JWT_SECRET` per app, never reused from queen.
 
 ---
 
 ## About
 
-bumble:live is the live show label of bumbleflies — facilitation, AI consulting, and app development from Munich. The streaming kit (runbook, checklist, OBS profiles, overlays) lives in `bumble-live/` inside this repo, the single source of truth the server imports directly.
+bumble:live is the live show label of bumbleflies: facilitation, AI consulting, and app development from Munich. The streaming kit (runbook, checklist, OBS profiles, overlays) lives in `bumble-live/` inside this repo, the single source of truth the server imports directly.
 
 ---
 

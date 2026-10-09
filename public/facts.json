@@ -1,7 +1,7 @@
 {
   "name": "bumble:live",
   "url": "https://live.bumbleflies.de",
-  "description": "Login-gated sidecar app for the bumbleflies live show: permanent VDO.Ninja room links and the matching OBS scene-collection download. Members manage the room; show guests join via personal access links.",
+  "description": "Conversations worth watching: the live show from bumbleflies. Members manage rooms and permanent VDO.Ninja links here; show guests join via personal access links.",
   "location": {
     "city": "Munich",
     "country": "DE"
@@ -15,9 +15,9 @@
     "website": "https://bumbleflies.de"
   },
   "access": {
-    "public": "Landing + Google sign-in + access-link entry at / (no API calls, no secrets)",
-    "guest": "Personal hash link #r=…&p=…&person=X — camera window, scene monitor, director control; no management",
-    "member": "bumbleflies Google accounts — guest-link creation, rotate, scene collection"
+    "public": "Landing, Google sign-in, and access-link entry at / (no API calls, no secrets)",
+    "guest": "Personal hash link #r=…&p=…&person=X with camera window, scene monitor, and director control; no management",
+    "member": "bumbleflies Google accounts with guest-link creation, rotate, and scene collection"
   },
   "room": {
     "persistence": "Permanent links; OBS imported once ever",

@@ -1,4 +1,4 @@
-# live.bumbleflies.de — Agent Directory
+# live.bumbleflies.de · Agent Directory
 # Machine-readable page index for AI crawlers and agents.
 
 # Site

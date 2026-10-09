@@ -1,8 +1,8 @@
-# bumble:live — public landing is indexable; APIs and auth are not.
+# bumble:live: public landing is indexable; APIs and auth are not.
 # Room secrets live in URL fragments (never sent to the server) and behind
 # the bumbleflies Google gate. Crawlers must never probe them.
 
-# AI crawlers — training and search/retrieval allowed on public content
+# AI crawlers: training and search/retrieval allowed on public content
 User-agent: GPTBot
 Allow: /
 Allow: /llms.txt
@@ -105,7 +105,7 @@ Allow: /llms-full.txt
 Disallow: /api/
 Disallow: /auth/
 
-# Standard search engines — public landing only
+# Standard search engines: public landing only
 User-agent: Googlebot
 Allow: /
 Disallow: /api/
@@ -123,7 +123,7 @@ Disallow: /
 User-agent: DotBot
 Disallow: /
 
-# Default — public landing allowed, APIs and auth off limits
+# Default: public landing allowed, APIs and auth off limits
 User-agent: *
 Allow: /
 Disallow: /api/
@@ -131,9 +131,9 @@ Disallow: /auth/
 
 # AI/Agent discovery files
 # These are designed for machine consumption:
-#   /llms.txt          — Site summary and navigation for LLMs
-#   /llms-full.txt     — Full content descriptions for RAG
-#   /agents.txt        — Machine-readable page directory
-#   /agents.md         — Agent welcome page
-#   /facts.json        — Structured facts
-#   /.well-known/agent-card.json — A2A agent capability manifest
+#   /llms.txt          : Site summary and navigation for LLMs
+#   /llms-full.txt     : Full content descriptions for RAG
+#   /agents.txt        : Machine-readable page directory
+#   /agents.md         : Agent welcome page
+#   /facts.json        : Structured facts
+#   /.well-known/agent-card.json : A2A agent capability manifest
