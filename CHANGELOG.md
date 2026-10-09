@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/bumbleflies/live/compare/live-v0.8.1...live-v0.8.2) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency express to v5.3.0 ([#24](https://github.com/bumbleflies/live/issues/24)) ([9e9c35e](https://github.com/bumbleflies/live/commit/9e9c35e49c53950d77288a8932c295f385d7ea0a))
+
 ## [0.8.1](https://github.com/bumbleflies/live/compare/live-v0.8.0...live-v0.8.1) (2026-10-09)
 
 
