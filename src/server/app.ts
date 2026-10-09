@@ -47,6 +47,14 @@ export function createApp() {
   // Serve built client in production
   if (process.env.NODE_ENV === 'production') {
     const clientDir = path.join(__dirname, '../..');
+    // Agent discovery lives under a dot-dir; express.static ignores dotfiles
+    // by default, so serve it explicitly (siblings web/edu expose the same
+    // file via nginx).
+    app.get('/.well-known/agent-card.json', (_req: Request, res: Response) => {
+      res.sendFile(path.join(clientDir, '.well-known', 'agent-card.json'), {
+        dotfiles: 'allow',
+      });
+    });
     app.use(express.static(clientDir));
     app.get('/*splat', (req, res, next: NextFunction) => {
       if (req.url.startsWith('/api') || req.url.startsWith('/auth')) {

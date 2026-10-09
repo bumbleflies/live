@@ -1,0 +1,14 @@
+# live.bumbleflies.de — Agent Directory
+# Machine-readable page index for AI crawlers and agents.
+
+# Site
+Homepage: https://live.bumbleflies.de/
+Guest access: https://live.bumbleflies.de/#r=…&p=…&person=… (personal hash link, per guest)
+
+# Machine-Readable Files
+llms.txt: https://live.bumbleflies.de/llms.txt
+llms-full.txt: https://live.bumbleflies.de/llms-full.txt
+agents.md: https://live.bumbleflies.de/agents.md
+facts.json: https://live.bumbleflies.de/facts.json
+Agent Card: https://live.bumbleflies.de/.well-known/agent-card.json
+robots.txt: https://live.bumbleflies.de/robots.txt

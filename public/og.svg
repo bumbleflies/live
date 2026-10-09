@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f5f1e8"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#8a6238"/>
+  <circle cx="104" cy="252" r="26" fill="#c0392b"/>
+  <text x="152" y="278" font-family="Georgia, 'Times New Roman', serif" font-size="88" fill="#1a1714" font-weight="400">bumble<tspan fill="#8a6238">:live</tspan></text>
+  <text x="80" y="352" font-family="'Courier New', monospace" font-size="28" fill="#5c554b" letter-spacing="4">PERMANENT ROOM LINKS + OBS DOWNLOAD</text>
+  <line x1="80" y1="392" x2="400" y2="392" stroke="#8a6238" stroke-width="2"/>
+  <text x="80" y="452" font-family="'Courier New', monospace" font-size="16" fill="#5c554b" letter-spacing="2">VDO.NINJA · OBS · GUEST ACCESS LINKS</text>
+</svg>

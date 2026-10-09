@@ -1,0 +1,49 @@
+{
+  "name": "bumble:live",
+  "description": "Login-gated sidecar app for the bumbleflies live show: permanent VDO.Ninja room links and the matching OBS scene-collection download. Members manage the room; show guests join via personal access links.",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "bumbleflies",
+    "url": "https://live.bumbleflies.de"
+  },
+  "documentationUrl": "https://live.bumbleflies.de/llms.txt",
+  "supportedInterfaces": [
+    {
+      "url": "https://live.bumbleflies.de",
+      "protocolBinding": "HTTP+JSON",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false
+  },
+  "defaultInputModes": ["text/plain", "text/markdown"],
+  "defaultOutputModes": ["text/plain", "text/markdown", "application/json"],
+  "skills": [
+    {
+      "id": "room-info",
+      "name": "Room Information",
+      "description": "Explains the bumble:live access tiers (public landing, guest hash links, member management), permanent room links, rotation semantics, and the OBS scene-collection download.",
+      "tags": ["live", "streaming", "vdo-ninja", "obs", "room", "guest-links"],
+      "examples": [
+        "What is bumble:live?",
+        "How do guests join the show?",
+        "What happens when the room is rotated?",
+        "How do I get the OBS scene collection?"
+      ]
+    },
+    {
+      "id": "guest-access",
+      "name": "Guest Access",
+      "description": "Explains personal guest access links (#r=…&p=…&person=X): camera window, scene monitor, director control — and that guests cannot manage the room. Guest links are keys and rotation revokes them.",
+      "tags": ["guest", "access-links", "director", "scene-monitor"],
+      "examples": [
+        "How does a guest join bumble:live?",
+        "What can a guest do in the room?",
+        "My guest link stopped working — why?"
+      ]
+    }
+  ]
+}

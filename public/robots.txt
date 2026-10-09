@@ -1,0 +1,139 @@
+# bumble:live — public landing is indexable; APIs and auth are not.
+# Room secrets live in URL fragments (never sent to the server) and behind
+# the bumbleflies Google gate. Crawlers must never probe them.
+
+# AI crawlers — training and search/retrieval allowed on public content
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Allow: /agents.md
+Allow: /facts.json
+Allow: /.well-known/agent-card.json
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Allow: /agents.md
+Allow: /facts.json
+Allow: /.well-known/agent-card.json
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: Claude-SearchBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: Claude-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Allow: /facts.json
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: Perplexity-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: Amazonbot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agents.txt
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: CCBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Disallow: /api/
+Disallow: /auth/
+
+# Standard search engines — public landing only
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+
+# Block known aggressive scrapers
+User-agent: Bytespider
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Default — public landing allowed, APIs and auth off limits
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+
+# AI/Agent discovery files
+# These are designed for machine consumption:
+#   /llms.txt          — Site summary and navigation for LLMs
+#   /llms-full.txt     — Full content descriptions for RAG
+#   /agents.txt        — Machine-readable page directory
+#   /agents.md         — Agent welcome page
+#   /facts.json        — Structured facts
+#   /.well-known/agent-card.json — A2A agent capability manifest

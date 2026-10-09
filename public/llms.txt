@@ -1,0 +1,32 @@
+# bumble:live
+
+> Login-gated sidecar app for the bumbleflies live show: generates permanent `bumble:live` VDO.Ninja room links and the matching OBS scene-collection download. Members manage the room; show guests join via personal access links.
+
+`bumble:live` is the live show format of bumbleflies (Munich). This app at https://live.bumbleflies.de turns room setup into login + click: sign in with a bumbleflies Google account, get the permanent room links (director, hosts, external guest, OBS view sources, screen share) plus a patched 8-scene OBS scene collection. Links are permanent, so OBS is imported once ever; rotation is an explicit, confirmable action that revokes every previously sent link.
+
+## Access tiers
+
+- **Public** (root, no link): static landing — what the show is, Google sign-in for bumbleflies members, and an "Open access link" field that accepts a full guest URL, the `#…` code fragment, or a bare `r=…&p=…` code. Zero API calls, zero room secrets.
+- **Guest** (hash capability `#r=…&p=…&person=X`): anonymous personal page bound to one person — own camera/publish window, full scene monitor, and the VDO.Ninja director for room control. Guests cannot manage: rotate, OBS download and the links list stay behind the Google gate. The secret lives in the URL fragment, which browsers never send to the server.
+- **Bumbleflies** (Google session): full room management incl. guest-link creation, rotate, scene collection.
+
+## Pages
+
+- [Homepage](https://live.bumbleflies.de/) — Public landing + sign-in + access-link entry. Guest mode renders from the URL fragment (`#r=…&p=…&person=…`).
+
+## Quick Facts
+
+- **URL:** https://live.bumbleflies.de
+- **Access:** bumbleflies Google accounts (members); guests via personal hash links
+- **Stack:** Vite + React 19 SPA, Express 5 REST, no database (signed JWT `live_token` cookie, 12h; room persists in one JSON file)
+- **Room:** permanent links; `POST /api/room` never rotates, `POST /api/room/rotate` revokes everything, `POST /api/scene-collection` downloads the OBS file
+- **Streams:** VDO.Ninja feeds + OBS; 8 scene modes in the stream monitor (All hosts equally, Hosts + Guest, Hosts + Screen, one Focus per person)
+- **Run by:** bumbleflies, Munich, Germany
+- **Guest links are keys:** handle them like keys; rotating the room revokes every guest link
+
+## Machine-Readable
+
+- [facts.json](https://live.bumbleflies.de/facts.json) — Structured facts
+- [llms-full.txt](https://live.bumbleflies.de/llms-full.txt) — Full content descriptions
+- [Agent Card](https://live.bumbleflies.de/.well-known/agent-card.json) — A2A capability manifest
+- [robots.txt](https://live.bumbleflies.de/robots.txt) — Crawler access rules

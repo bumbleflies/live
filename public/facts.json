@@ -1,0 +1,36 @@
+{
+  "name": "bumble:live",
+  "url": "https://live.bumbleflies.de",
+  "description": "Login-gated sidecar app for the bumbleflies live show: permanent VDO.Ninja room links and the matching OBS scene-collection download. Members manage the room; show guests join via personal access links.",
+  "location": {
+    "city": "Munich",
+    "country": "DE"
+  },
+  "contact": {
+    "email": "info@bumbleflies.de",
+    "parent": "https://bumbleflies.de"
+  },
+  "organization": {
+    "name": "bumbleflies",
+    "website": "https://bumbleflies.de"
+  },
+  "access": {
+    "public": "Landing + Google sign-in + access-link entry at / (no API calls, no secrets)",
+    "guest": "Personal hash link #r=…&p=…&person=X — camera window, scene monitor, director control; no management",
+    "member": "bumbleflies Google accounts — guest-link creation, rotate, scene collection"
+  },
+  "room": {
+    "persistence": "Permanent links; OBS imported once ever",
+    "rotate": "POST /api/room/rotate revokes every previously sent link",
+    "sceneCollection": "POST /api/scene-collection downloads the patched 8-scene OBS file"
+  },
+  "stack": ["Vite", "React 19", "Express 5", "VDO.Ninja", "OBS"],
+  "languages": ["en"],
+  "specialties": [
+    "Live streaming",
+    "VDO.Ninja rooms",
+    "OBS scene collections",
+    "Guest access links",
+    "Stream monitoring"
+  ]
+}
