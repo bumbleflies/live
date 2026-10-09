@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/bumbleflies/live/compare/live-v0.8.0...live-v0.8.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* **ui:** show guest access links as visible URL rows ([8813a7a](https://github.com/bumbleflies/live/commit/8813a7a797457302c911d0b595d5b1f338d70bca))
+
 ## [0.8.0](https://github.com/bumbleflies/live/compare/live-v0.7.0...live-v0.8.0) (2026-10-09)
 
 
