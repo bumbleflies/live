@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/bumbleflies/live/compare/live-v0.8.2...live-v0.8.3) (2026-10-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency dotenv to v18.0.7 ([#26](https://github.com/bumbleflies/live/issues/26)) ([6faf4bc](https://github.com/bumbleflies/live/commit/6faf4bcd1f9c5855523ff0195ebd31bf8e015a74))
+
 ## [0.8.2](https://github.com/bumbleflies/live/compare/live-v0.8.1...live-v0.8.2) (2026-10-09)
 
 
