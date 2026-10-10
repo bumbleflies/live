@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/bumbleflies/live/compare/live-v0.8.4...live-v0.8.5) (2026-10-10)
+
+
+### Bug Fixes
+
+* **ui:** landing uses bumble live accent and hint spacing ([187fb26](https://github.com/bumbleflies/live/commit/187fb26d767f1fcef396aa40ce3afac3f77c5359))
+
 ## [0.8.4](https://github.com/bumbleflies/live/compare/live-v0.8.3...live-v0.8.4) (2026-10-10)
 
 
