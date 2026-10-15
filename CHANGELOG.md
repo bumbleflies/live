@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.9](https://github.com/bumbleflies/live/compare/live-v0.8.8...live-v0.8.9) (2026-10-15)
+
+
+### Bug Fixes
+
+* **deps:** update react monorepo to v19.3.1 ([#36](https://github.com/bumbleflies/live/issues/36)) ([7825e6b](https://github.com/bumbleflies/live/commit/7825e6bbceee4b61f40eaef4e373200fb2bcfa95))
+
 ## [0.8.8](https://github.com/bumbleflies/live/compare/live-v0.8.7...live-v0.8.8) (2026-10-14)
 
 
