@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.10](https://github.com/bumbleflies/live/compare/live-v0.8.9...live-v0.8.10) (2026-10-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency vitest to v5.0.5 ([#39](https://github.com/bumbleflies/live/issues/39)) ([6885470](https://github.com/bumbleflies/live/commit/6885470e46de645f037fcdc2981da7c8d840ea0e))
+
 ## [0.8.9](https://github.com/bumbleflies/live/compare/live-v0.8.8...live-v0.8.9) (2026-10-15)
 
 
