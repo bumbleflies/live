@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.15](https://github.com/bumbleflies/live/compare/live-v0.8.14...live-v0.8.15) (2026-10-27)
+
+
+### Bug Fixes
+
+* route guest audio through OBS in scene collections ([#49](https://github.com/bumbleflies/live/issues/49)) ([1236f78](https://github.com/bumbleflies/live/commit/1236f78640fc979048d439bb30884d602f4a2bd6))
+
 ## [0.8.14](https://github.com/bumbleflies/live/compare/live-v0.8.13...live-v0.8.14) (2026-10-27)
 
 
