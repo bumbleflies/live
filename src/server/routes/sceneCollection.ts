@@ -8,7 +8,10 @@ export interface SceneSource {
 
 // Mapping of Browser Source names to the fixed push ids each watches.
 // Everything else (Overlay Starting/Break/Ending, Lower Thirds, Bug and the
-// scenes themselves) is left untouched.
+// scenes themselves) is left untouched. All five VDO sources must also keep
+// `reroute_audio: true` ("Control audio via OBS"): with it off the browser
+// plays guest audio to the host's speakers and it never reaches the mixer,
+// the recording, or YouTube.
 function vdoPushFor(name: string): string | undefined {
   return ({
     Nico: 'NicoCam',
@@ -20,7 +23,7 @@ function vdoPushFor(name: string): string | undefined {
 }
 
 /**
- * Deep-clone the vendored template and patch exactly the four VDO.Ninja
+ * Deep-clone the vendored template and patch exactly the five VDO.Ninja
  * Browser Sources. `JSON.parse(JSON.stringify(...))` also normalises the
  * template into a structure safe to mutate.
  */
