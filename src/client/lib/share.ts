@@ -86,9 +86,18 @@ export function pushFor(person: string): string {
   return `${person}Cam`;
 }
 
-/** Publish (join/camera) URL for a person, composed purely from the room secret. */
+/**
+ * Publish (join/camera) URL for a person, composed purely from the room secret.
+ *
+ * `&autostart` skips VDO.Ninja's two-step join (mode chooser → device setup →
+ * START) and goes live as soon as the camera is ready. Without it the page just
+ * shows a local camera preview, which looks identical to being live. The
+ * screen-share slot keeps the chooser — autostart there would grab the camera
+ * instead of prompting for a screen.
+ */
 export function buildPublishUrl(room: string, password: string, person: string): string {
-  return `${VDO}/?room=${encodeURIComponent(room)}&password=${encodeURIComponent(password)}&push=${pushFor(person)}&label=${person}`;
+  const autostart = person === 'Screen' ? '' : '&autostart';
+  return `${VDO}/?room=${encodeURIComponent(room)}&password=${encodeURIComponent(password)}&push=${pushFor(person)}&label=${person}${autostart}`;
 }
 
 /** VDO.Ninja director URL for room control (the guest tier's 'control the show' link). */

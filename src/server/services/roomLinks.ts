@@ -51,7 +51,11 @@ export function generatePassword(): string {
 export const GUEST_NAMES = ['Nico', 'Sebi', 'Chris'] as const;
 
 export function guestLink(room: string, password: string, name: string): string {
-  return `${VDO}/?room=${enc(room)}&password=${enc(password)}&push=${name}Cam&label=${name}`;
+  // `&autostart` makes VDO.Ninja skip its "Join Room with Camera / Screenshare"
+  // chooser and the START step, joining as soon as the camera is ready. The
+  // screen-share slot must keep the chooser, or autostart would grab the camera.
+  const autostart = name === 'Screen' ? '' : '&autostart';
+  return `${VDO}/?room=${enc(room)}&password=${enc(password)}&push=${name}Cam&label=${name}${autostart}`;
 }
 
 export function obsViewLink(room: string, password: string, push: string): string {
