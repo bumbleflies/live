@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.16](https://github.com/bumbleflies/live/compare/live-v0.8.15...live-v0.8.16) (2026-10-27)
+
+
+### Bug Fixes
+
+* auto-join VDO.Ninja publish links with autostart ([#51](https://github.com/bumbleflies/live/issues/51)) ([857a32e](https://github.com/bumbleflies/live/commit/857a32e22585b802c454cee4f53e2dbd20fd499c))
+
 ## [0.8.15](https://github.com/bumbleflies/live/compare/live-v0.8.14...live-v0.8.15) (2026-10-27)
 
 
