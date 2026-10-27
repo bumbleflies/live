@@ -34,7 +34,7 @@ describe('buildLinks', () => {
 
   it('external guest watches the fixed GuestCam push id', () => {
     expect(room.externalGuest.link).toBe(
-      `https://vdo.ninja/?room=${encodedRoom}&password=${encodedPass}&push=GuestCam&label=Guest`,
+      `https://vdo.ninja/?room=${encodedRoom}&password=${encodedPass}&push=GuestCam&label=Guest&autostart`,
     );
     expect(room.obsSources.find((o) => o.name === 'Guest')?.link).toBe(
       `https://vdo.ninja/?view=GuestCam&solo&room=${encodedRoom}&password=${encodedPass}`,
@@ -51,8 +51,20 @@ describe('buildLinks', () => {
     for (const name of GUEST_NAMES) {
       expect(
         room.guests.find((g) => g.name === name)?.link,
-      ).toBe(`https://vdo.ninja/?room=${encodedRoom}&password=${encodedPass}&push=${name}Cam&label=${name}`);
+      ).toBe(
+        `https://vdo.ninja/?room=${encodedRoom}&password=${encodedPass}&push=${name}Cam&label=${name}&autostart`,
+      );
     }
+  });
+
+  it('autostarts camera links but leaves the screen-share link alone', () => {
+    for (const guest of [...room.guests, room.externalGuest]) {
+      expect(guest.link).toContain('&autostart');
+    }
+    expect(room.screenShare.guestLink).not.toContain('autostart');
+    expect(room.screenShare.guestLink).toBe(
+      `https://vdo.ninja/?room=${encodedRoom}&password=${encodedPass}&push=ScreenShare&label=Screen`,
+    );
   });
 
   it('OBS view links watch the fixed push ids with solo', () => {

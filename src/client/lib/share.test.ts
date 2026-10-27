@@ -66,8 +66,9 @@ describe('share links (anonymous guest capability)', () => {
 
   it('composes publish, solo-view and director URLs from the room secret', () => {
     expect(buildPublishUrl('r', 'p', 'Nico')).toBe(
-      'https://vdo.ninja/?room=r&password=p&push=NicoCam&label=Nico',
+      'https://vdo.ninja/?room=r&password=p&push=NicoCam&label=Nico&autostart',
     );
+    // Screen sharing must keep VDO's chooser: autostart would start the camera.
     expect(buildPublishUrl('r', 'p', 'Screen')).toBe(
       'https://vdo.ninja/?room=r&password=p&push=ScreenShare&label=Screen',
     );
