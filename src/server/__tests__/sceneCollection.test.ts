@@ -5,7 +5,7 @@ import { buildSceneCollection, buildSceneCollectionJson, sceneCollectionFilename
 interface SceneSource {
   name: string;
   id?: string;
-  settings?: { url?: string };
+  settings?: { url?: string; reroute_audio?: boolean };
 }
 
 describe('scene-collection transform', () => {
@@ -64,6 +64,21 @@ describe('scene-collection transform', () => {
     expect(url).toBe(
       `https://vdo.ninja/?view=${push}&solo&room=${room.room}&password=${room.password}`,
     );
+  });
+
+  it('routes guest audio through OBS for every VDO source', () => {
+    const vdoSources = data.sources.filter((s) =>
+      s.settings?.url?.startsWith('https://vdo.ninja') === true,
+    );
+    expect(vdoSources).toHaveLength(5);
+    for (const source of vdoSources) {
+      // "Control audio via OBS" off plays audio to the host's speakers instead
+      // of into the mixer, so the stream/recording would be silent.
+      expect(
+        source.settings?.reroute_audio,
+        `${source.name} must have "Control audio via OBS" enabled`,
+      ).toBe(true);
+    }
   });
 
   it('leaves overlay sources untouched', () => {
