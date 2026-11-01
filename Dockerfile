@@ -1,5 +1,5 @@
 # Build stage
-FROM node:24-alpine AS builder
+FROM node:26-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
@@ -11,7 +11,7 @@ ENV VITE_GIT_COMMIT_HASH=$VITE_GIT_COMMIT_HASH
 RUN npm run build
 
 # Runtime stage
-FROM node:24-alpine
+FROM node:26-alpine
 # Business dates are local German dates
 ENV TZ=Europe/Berlin
 # Data dir owned by the runtime user and advertised via env — the compose
