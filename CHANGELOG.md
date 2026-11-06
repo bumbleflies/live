@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.22](https://github.com/bumbleflies/live/compare/live-v0.8.21...live-v0.8.22) (2026-11-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency oxlint to v1.92.0 ([#63](https://github.com/bumbleflies/live/issues/63)) ([8153331](https://github.com/bumbleflies/live/commit/8153331a2cf58b35f29b734a3b666878cede86a4))
+
 ## [0.8.21](https://github.com/bumbleflies/live/compare/live-v0.8.20...live-v0.8.21) (2026-11-05)
 
 
