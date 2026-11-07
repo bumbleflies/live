@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.24](https://github.com/bumbleflies/live/compare/live-v0.8.23...live-v0.8.24) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency supertest to v7.3.2 ([#66](https://github.com/bumbleflies/live/issues/66)) ([6e85bf0](https://github.com/bumbleflies/live/commit/6e85bf07e0706dff3800b331505b5b790a48dac3))
+
 ## [0.8.23](https://github.com/bumbleflies/live/compare/live-v0.8.22...live-v0.8.23) (2026-11-07)
 
 
