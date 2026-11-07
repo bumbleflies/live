@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.23](https://github.com/bumbleflies/live/compare/live-v0.8.22...live-v0.8.23) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency concurrently to v10.0.7 ([#65](https://github.com/bumbleflies/live/issues/65)) ([1c608b1](https://github.com/bumbleflies/live/commit/1c608b10014782a84e6827e16baa331f5fd2376d))
+
 ## [0.8.22](https://github.com/bumbleflies/live/compare/live-v0.8.21...live-v0.8.22) (2026-11-06)
 
 
