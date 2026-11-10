@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.27](https://github.com/bumbleflies/live/compare/live-v0.8.26...live-v0.8.27) (2026-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @vitejs/plugin-react to v6.3.0 ([#70](https://github.com/bumbleflies/live/issues/70)) ([c2db58f](https://github.com/bumbleflies/live/commit/c2db58f01d1da8f177772b35a8220e83ca7d35c9))
+
 ## [0.8.26](https://github.com/bumbleflies/live/compare/live-v0.8.25...live-v0.8.26) (2026-11-10)
 
 
