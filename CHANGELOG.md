@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.26](https://github.com/bumbleflies/live/compare/live-v0.8.25...live-v0.8.26) (2026-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency vite to v8.3.7 ([#71](https://github.com/bumbleflies/live/issues/71)) ([82741f8](https://github.com/bumbleflies/live/commit/82741f88f9e54f715b984bc36ad777ecced9939e))
+
 ## [0.8.25](https://github.com/bumbleflies/live/compare/live-v0.8.24...live-v0.8.25) (2026-11-09)
 
 
