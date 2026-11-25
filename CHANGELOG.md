@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.34](https://github.com/bumbleflies/live/compare/live-v0.8.33...live-v0.8.34) (2026-11-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/node to v26.6.7 ([#85](https://github.com/bumbleflies/live/issues/85)) ([8d1eece](https://github.com/bumbleflies/live/commit/8d1eece4da1a65bf51bd6da930722f8156d9bf3e))
+
 ## [0.8.33](https://github.com/bumbleflies/live/compare/live-v0.8.32...live-v0.8.33) (2026-11-24)
 
 
