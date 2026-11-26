@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.36](https://github.com/bumbleflies/live/compare/live-v0.8.35...live-v0.8.36) (2026-11-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/react to v19.3.3 ([#91](https://github.com/bumbleflies/live/issues/91)) ([6cb628f](https://github.com/bumbleflies/live/commit/6cb628fbc13f3fa4f8639eb7eac74658826bd602))
+
 ## [0.8.35](https://github.com/bumbleflies/live/compare/live-v0.8.34...live-v0.8.35) (2026-11-26)
 
 
